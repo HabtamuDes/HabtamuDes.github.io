@@ -1,807 +1,325 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
-
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Habtamu Assegahegn — Full stack developer, electronics & embedded systems enthusiast, AI enthusiast. Portfolio and projects.">
+  <meta name="description" content="Habtamu Assegahegn — Full stack developer, electronics & embedded systems, AI enthusiast. Portfolio and projects.">
   <title>Habtamu Assegahegn | Portfolio</title>
-
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
-
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.7.1.min.js"><\/script>')</script>
-  <script src="js/vendor/jquery.hashchange.min.js"></script>
-  <script src="js/vendor/jquery.easytabs.min.js"></script>
-  <script src="js/main.js"></script>
 </head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#" class="logo">HA</a>
+      <nav class="nav" aria-label="Main">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" hidden><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </header>
 
-<body class="bg-fixed bg-1">
-  <div class="main-container">
-    <div class="main wrapper clearfix">
-
-      <header id="header">
-        <div id="logo">
-          <h6>HABTAMU ASSEGAHEGN</h6>
-          <h4>Full Stack Developer · Electronics & Embedded Systems · AI Enthusiast</h4>
-        </div>
-      </header>
-
-      <header id="hello-header" aria-hidden="true">
-        <div id="helloworld">
-          <h1>Hello, World!</h1>
-        </div>
-      </header>
-
-      <!-- Main Tab Container -->
-      <div id="tab-container" class="tab-container">
-
-        <!-- Tab List -->
-        <ul class='etabs'>
-
-          <li class='tab' id="tab-about">
-            <a href="#about">
-              <i class="icon-user"></i>
-              <span>
-                About Me
-              </span>
-            </a>
-          </li>
-
-          <li class='tab'>
-            <a href="#resume">
-              <i class="icon-file-text"></i>
-              <span>
-                Skills
-              </span>
-            </a>
-          </li>
-
-          <li class='tab'>
-            <a href="#portfolio">
-              <i class="icon-heart"></i>
-              <span>
-                Projects
-              </span>
-            </a>
-          </li>
-
-          <li class='tab'>
-            <a href="#contact">
-              <i class="icon-envelope"></i>
-              <span>
-                Contact
-              </span>
-            </a>
-          </li>
-
-        </ul>
-        <!-- End Tab List -->
-
-        <!-- ----------------------------------------------------------------------------------- -->
-        <!-- Code for differents Tabs strat from here. -->
-        <div id="tab-data-wrap">
-
-          <!-- About Tab Data -->
-          <div id="about">
-            <section class="clearfix">
-              <div class="g2">
-                <div class="photo">
-                  <img src="./images/my.jpg" alt="Habtamu Assegahegn">
-                </div>
-                <div class="info">
-                  <h2>HABTAMU ASSEGAHEGN</h2>
-                  <h4>Developer · Embedded System Designer</h4>
-                  <p>
-                    My name is Habtamu Assegahegn. I'm an energetic professional who strives for technology growth.
-                    I love to create, innovate, and find solutions to problems that make tasks difficult for people.
-                    I'm open and ready to learn and keep myself updated. Want to know more? Just ask!
-                  </p>
-                </div>
-              </div>
-
-              <div class="g1">
-                <div class="main-links sidebar">
-                  <ul>
-                    <li>
-                      <a href="#resume">
-                        View My Skills
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#portfolio">
-                        View My Projects
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#contact">
-                        Hire me for your next project
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="break">
-              </div>
-              <div class="contact-info">
-                <div class="g1">
-                  <div class="item-box clearfix">
-                    <i class="icon-envelope"></i>
-                    <div class="item-data">
-                      <h3>
-                        <a href="mailto:habtamuassegahegn7@gmail.com">
-                          habtamuassegahegn7@gmail.com
-                        </a>
-                      </h3>
-                      <p>
-                        Email Address
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="g1">
-                  <div class="item-box clearfix">
-                    <i class="icon-facebook"></i>
-                    <div class="item-data">
-                      <h3>
-                        <a href="https://www.facebook.com/habtamuassegahegn">
-                          Habtamu Assegahegn
-                        </a>
-                      </h3>
-                      <p>
-                        Facebook Profile
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="g1">
-                  <div class="item-box clearfix">
-                    <i class="icon-linkdin"></i>
-                    <div class="item-data">
-                      <h3>
-                        <a href="https://www.linkedin.com/in/habtamu-assegahegn-15a554177/">
-                          Habtamu assegahegn
-                        </a>
-                      </h3>
-                      <p>
-                        LinkedIn Profile
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="g1">
-                  <div class="item-box clearfix">
-                    <i class="icon-linkdin"></i>
-                    <div class="item-data">
-                      <h3>
-                        <a href="https://github.com/habtamuDes">
-                          Habtamu assegahegn
-                        </a>
-                      </h3>
-                      <p>
-                        GitHub Profile
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="g1">
-                  <div class="item-box clearfix">
-                    <i class="icon-twitter"></i>
-                    <div class="item-data">
-                      <h3>
-                        <a href="https://twitter.com/habtamuassegah1">
-                        @habtamuassegah1
-                        </a>
-                      </h3>
-                      <p>
-                        Twitter Handle
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-          <!-- End About Tab Data -->
-          <!-- ----------------------------------------------------------------------------------- -->
-          <!-- skills Tab Data -->
-          <div id="resume">
-            <section class="clearfix">
-              <div class="g2">
-                <h3>
-                  Programming
-                </h3>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Python
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      C++
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 70%">
-                    <span>
-                      Java
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 100%">
-                    <span>
-                      Html
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 100%">
-                    <span>
-                      SQL
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 74%">
-                    <span>
-                      PHP
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 45%">
-                    <span>
-                      Dart
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 100%">
-                    <span>
-                      CSS
-                    </span>
-                  </span>
-                </div>
-                
-                <div class="meter emerald">
-                  <span style="width: 100%">
-                    <span>
-                      MySQL
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 85%">
-                    <span>
-                      C
-                    </span>
-                  </span>
-                </div>
-                <div class="break"></div>
-              </div>
-
-              <div class="g1">
-                <h3>
-                  Skills
-                </h3>
-                <div class="meter emerald">
-                  <span style="width: 99%">
-                    <span>
-                      Basic computer skills
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Database management
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 85%">
-                    <span>
-                      PostgreSQL
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 85%">
-                    <span>
-                      Oracle DBMS
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 85%">
-                    <span>
-                      XAMPP
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 85%">
-                    <span>
-                      MySQL
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 85%">
-                    <span>
-                      SQLite
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 80%">
-                    <span>
-                      Web Development 
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 80%">
-                    <span>
-                      Android Development
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Embedded system design
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Data visualization
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Image Processing
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Video Editing
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Teaching
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Leadership
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Research
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Public Speaking
-                    </span>
-                  </span>
-                </div>
-                
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Machine learning
-                    </span>
-                  </span>
-                </div>
-                <div class="meter emerald">
-                  <span style="width: 90%">
-                    <span>
-                      Linux OS
-                    </span>
-                  </span>
-                </div>
-              </div>
-
-              <div class="g2">
-                <h3>
-                  Hobbies
-                </h3>
-                <span class="label label-info">Coding</span>
-                <span class="label label-info">Reading</span>
-                <span class="label label-info">Watching Movies</span>
-                <span class="label label-info">Hearing Music</span>
-                <span class="label label-info">Hiking</span>
-                <span class="label label-info">DIY Electronics</span>
-                <span class="label label-info">Meditation</span>
-              </div>
-            </section>
-          </div>
-
-          <!-- End skills Tab Data -->
-          <!-- ----------------------------------------------------------------------------------- -->
-          <!-- Projects Tab Data -->
-          <div id="portfolio">
-            <section class="clearfix">
-              <div class="project-section">
-                <div class="project-container">
-                  <div class="project-img-container" onclick="document.getElementById('project_farm').style.display='block'">
-                   <img src="./images/farm5.png" alt="project image">
-                  </div>
-                  <p class="project-title"  onclick="document.getElementById('project-farm').style.display='block'">Smart Farming</p>
-                </div>
-
-                <div class="project-container">
-                  <div class="project-img-container" onclick="document.getElementById('project_feta').style.display='block'">
-                   <img src="./images/feta.jpg" alt="project image">
-                  </div>
-                  <p class="project-title"  onclick="document.getElementById('project-feta').style.display='block'">FetaMovies</p>
-                </div>
-
-                <div class="project-container">
-                  <div class="project-img-container" onclick="document.getElementById('project_lms').style.display='block'">
-                   <img src="./images/lms.jpg" alt="project image">
-                  </div>
-                  <p class="project-title"  onclick="document.getElementById('project-lms').style.display='block'">LMS</p>
-                </div>
-
-                <div class="project-container">
-                  <div class="project-img-container" onclick="document.getElementById('project_pygame').style.display='block'">
-                   <img src="./images/pygame.png" alt="project image">
-                  </div>
-                  <p class="project-title"  onclick="document.getElementById('project-pygame').style.display='block'">Simple Python Game</p>
-                </div>
-
-                <div class="project-container">
-                  <div class="project-img-container" onclick="document.getElementById('project_pay').style.display='block'">
-                   <img src="./images/pay.png" alt="project image">
-                  </div>
-                  <p class="project-title"  onclick="document.getElementById('project-pay').style.display='block'">Payroll System</p>
-                </div>
-              </div> 
-              <!-- End Projects tab -->
-              <!-- ----------------------------------------------------------------------------------- -->
-            
-              <!--project Detail----------------------------------->
-              <div id="project_farm" class="modal">
-                <form class="modal-content animate">
-                  <div class="imgcontainer">
-                    <span onclick="document.getElementById('project_farm').style.display='none'" class="close" title="Close PopUp">&times;</span>
-                    <img src="images/farm5.jpg" alt="project" class="avatar">
-                    <h1 class="project_details" style="text-align:center">Project Details</h1>
-                  </div>
-                  <div class="container">
-                    <label for="pname"> Project Name:</label><br>
-                    <input type="text" id="pname" name="fname" value="Smart Farming"><br>
-                    <label for="pdesc"> Project Description:</label><br>
-                    <textarea class="project_description" rows="3" placeholder="Smart farming is a project that help farmers & growers by providing providing realTime Sensor data throug dashbord and sms,it is composed of both hardware and software" readonly></textarea><br>
-                    <label for="plangname"> Languages Used:</label><br>
-                    <input type="text" id="plangname" placeholder="PHP, Vujs, PostgreSQL, RestAPI, PWA,C,C++" readonly><br>
-                    <label for="phw"> Hardware used:</label><br>
-                    <input type="text" id="phw" placeholder="Arduino,NodMcu,Dht11,Soil Moisture,WaterPump, Water Level,LCD" readonly><br>
-                  </div>
-                </form>
-              </div>
-
-              <div id="project_feta" class="modal">
-                <form class="modal-content animate">
-                  <div class="imgcontainer">
-                    <span onclick="document.getElementById('project_feta').style.display='none'" class="close" title="Close PopUp">&times;</span>
-                    <img src="images/feta1.jpg" alt="project" class="avatar">
-                    <h1 class="project_details" style="text-align:center">Project Details</h1>
-                  </div>
-                  <div class="container2">
-                    <label for="pname"> Project Name:</label><br>
-                    <input type="text" id="pname" name="fname" value="FetaMovies"><br>
-                    <label for="pdesc"> Project Description:</label><br>
-                    <textarea class="project_description" rows="3" placeholder="FetaMovies is a movie streaming site that provides HD movies for users that have accounts." readonly></textarea><br>
-                    <label for="plangname"> Languages Used:</label><br>
-                    <input type="text" id="plangname" placeholder="PHP, HTML, Css" readonly><br>
-                  </div>
-                </form>
-             </div>  
-
-             <div id="project_pygame" class="modal">
-              <form class="modal-content animate">
-                <div class="imgcontainer">
-                  <span onclick="document.getElementById('project_pygame').style.display='none'" class="close" title="Close PopUp">&times;</span>
-                  <img src="images/pygame1.png" alt="project" class="avatar">
-                  <h1 class="project_details" style="text-align:center">Project Details</h1>
-                </div>
-                <div class="container2">
-                  <label for="pname"> Project Name:</label><br>
-                  <input type="text" id="pname" name="fname" value="Simple python Game"><br>
-                  <label for="pdesc"> Project Description:</label><br>
-                  <textarea class="project_description" rows="3" placeholder="car py is a simple car game made to demonstrate the efficiency of python pygame Library." readonly></textarea><br>
-                  <label for="plangname"> Languages Used:</label><br>
-                  <input type="text" id="plangname" placeholder="Python (Pygame Library)" readonly><br>
-                </div>
-              </form>
-           </div>  
-
-
-             <div id="project_lms" class="modal">
-              <form class="modal-content animate">
-                <div class="imgcontainer">
-                  <span onclick="document.getElementById('project_lms').style.display='none'" class="close" title="Close PopUp">&times;</span>
-                  <img src="images/lms.jpg" alt="project" class="avatar">
-                  <h1 class="project_details" style="text-align:center">Project Details</h1>
-                </div>
-                <div class="container2">
-                  <label for="pname"> Project Name:</label><br>
-                  <input type="text" id="pname" name="fname" value="Learning Management System"><br>
-                  <label for="pdesc"> Project Description:</label><br>
-                  <textarea class="project_description" rows="3" placeholder="Lms is a simple learning management system that you can register students and add courses ,give tests online." readonly></textarea><br>
-                  <label for="plangname"> Languages Used:</label><br>
-                  <input type="text" id="plangname" placeholder="Python, HTML, Css, AJAX,JavaScrpit, Django Frame work" readonly><br>
-                </div>
-              </form>
-           </div>   
-
-           <div id="project_pay" class="modal">
-            <form class="modal-content animate">
-              <div class="imgcontainer">
-                <span onclick="document.getElementById('project_pay').style.display='none'" class="close" title="Close PopUp">&times;</span>
-                <img src="images/pay.png" alt="project" class="avatar">
-                <h1 class="project_details" style="text-align:center">Project Details</h1>
-              </div>
-              <div class="container2">
-                <label for="pname"> Project Name:</label><br>
-                <input type="text" id="pname" name="fname" value="Advanced Payroll Management System "><br>
-                <label for="pdesc"> Project Description:</label><br>
-                <textarea class="project_description" rows="3" placeholder="Advanced Payroll Management system is a Management system that user performs various tasks." readonly></textarea><br>
-                <label for="plangname"> Languages Used:</label><br>
-                <input type="text" id="plangname" placeholder="Java & Jdbc, Oracle" readonly><br>
-              </div>
-            </form>
-         </div>   
-
-            <!-- End Projects tab -->
-              <!-- ----------------------------------------------------------------------------------- -->
-             <!--image displayer for projects-->
-             <div id="project-farm" class="modal">
-              <form class="modal-content animate">
-                <div class="imgcontainer">
-                  <span onclick="document.getElementById('project-farm').style.display='none'" class="close" title="Close PopUp">&times;</span>
-                  <h1 class="project_details" style="text-align:center">Project Image</h1>
-                </div>
-                <div class="project-section">
-                  <div class="project-container">
-                    <div class="project-img-container">
-                      <img src="./images/farm2.jpg" alt="project image">
-                     </div>        
-                    <div class="project-img-container">
-                      <img src="./images/farm3.jpg" alt="project image"> 
-                  </div>
-                  <div class="project-img-container">
-                    <img src="./images/farm5.jpg" alt="project image">
-                   </div> 
-                   <div class="project-img-container">
-                    <img src="./images/farm6.jpg" alt="project image">
-                   </div> 
-                   <div class="project-img-container">
-                    <img src="./images/f2.jpg" alt="project image">
-                   </div>
-                   <div class="project-img-container">
-                    <img src="./images/f3.jpg" alt="project image">
-                   </div>
-                </div>
-              </form>
-             </div>
-            </div>
-
-            
-
-              <div id="project-feta" class="modal">
-                <form class="modal-content animate">
-                <div class="imgcontainer">
-                 <span onclick="document.getElementById('project-feta').style.display='none'" class="close" title="Close PopUp">&times;</span>
-                 <h1 class="project_details" style="text-align:center">Project Image</h1>
-                </div>
-                <div class="project-section">
-                  <div class="project-container">
-                   <div class="project-img-container">
-                      <img src="./images/feta.jpg" alt="project image">
-                     </div>        
-                     <div class="project-img-container">
-                      <img src="./images/feta1.jpg" alt="project image"> 
-                     </div>
-                     <div class="project-img-container">
-                      <img src="./images/feta2.jpg" alt="project image"> 
-                     </div>
-   
-                 </div>
-                 </form>
-                </div>
-              </div>
-
-              <div id="project-pygame" class="modal">
-                <form class="modal-content animate">
-                <div class="imgcontainer">
-                 <span onclick="document.getElementById('project-pygame').style.display='none'" class="close" title="Close PopUp">&times;</span>
-                 <h1 class="project_details" style="text-align:center">Project Image</h1>
-                </div>
-                <div class="project-section">
-                  <div class="project-container">
-                   <div class="project-img-container">
-                      <img src="./images/pygame.png" alt="project image">
-                     </div>        
-                     <div class="project-img-container">
-                      <img src="./images/pygame1.png" alt="project image"> 
-                     </div>
-                     <div class="project-img-container">
-                      <img src="./images/pygame2.png" alt="project image"> 
-                     </div>
-                     <div class="project-img-container">
-                      <img src="./images/pygame3.png" alt="project image"> 
-                     </div>
-    
-                 </div>
-                 </form>
-                </div>
-              </div>
-              
-
-              <div id="project-pay" class="modal">
-                <form class="modal-content animate">
-                <div class="imgcontainer">
-                 <span onclick="document.getElementById('project-pay').style.display='none'" class="close" title="Close PopUp">&times;</span>
-                 <h1 class="project_details" style="text-align:center">Project Image</h1>
-                </div>
-                <div class="project-section">
-                  <div class="project-container">
-                   <div class="project-img-container">
-                      <img src="./images/pay.png" alt="project image">
-                     </div>        
-                     <div class="project-img-container">
-                      <img src="./images/pay.png" alt="project image"> 
-                     </div>
-                     <div class="project-img-container">
-                      <img src="./images/pay.png" alt="project image"> 
-                     </div>
-   
-                 </div>
-                 </form>
-                </div>
-              </div>
-          
-           
-            <div id="project-lms" class="modal">
-             <form class="modal-content animate">
-               <div class="imgcontainer">
-                 <span onclick="document.getElementById('project-lms').style.display='none'" class="close" title="Close PopUp">&times;</span>
-                 <h1 class="project_details" style="text-align:center">Project Image</h1>
-               </div>
-               <div class="project-section">
-                 <div class="project-container">
-                   <div class="project-img-container">
-                     <img src="./images/lms.jpg" alt="project image">
-                    </div>        
-                   <div class="project-img-container">
-                     <img src="./images/lms2.jpg" alt="project image"> 
-                 </div>
-                 <div class="project-img-container">
-                   <img src="./images/lms3.jpg" alt="project image"> 
-               </div>
-               <div class="project-img-container">
-                 <img src="./images/lms4.jpg" alt="project image"> 
-              </div>
-              <div class="project-img-container">
-               <img src="./images/lms5.jpg" alt="project image"> 
-              </div>
-               </div>
-             </form>
-            </div>
-           </div>
-
-           
-          
-      
-      
-          
-             </section>
-            </div>  
-          
-          
-          
-           
-           
-
-            
-
-      
-
-         <!--End project image displayer-->
-         <!---------------------------------------------------------------------------------------->
-          <!-- Contact Tab Data -->
-          <div id="contact">
-            <section class="clearfix">
-              <div class="g1">
-                <div class="sny-icon-box">
-                  <div class="sny-icon">
-                    <i class="icon-globe"></i>
-                  </div>
-                  <div class="sny-icon-content">
-                    <h4>
-                      Address
-                    </h4>
-                    <p>
-                      Addis Ababa/Ethiopia
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="g1">
-                <div class="sny-icon-box">
-                  <div class="sny-icon">
-                    <i class="icon-phone"></i>
-                  </div>
-                  <div class="sny-icon-content">
-                    <h4>
-                      E-mail
-                    </h4>
-                    <p>
-                      habtamuassegahegn7@gmail.com<br />habtamu.asegahegn@du.edu.et
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="g1">
-                <div class="sny-icon-box">
-                  <div class="sny-icon">
-                    <i class="icon-user"></i>
-                  </div>
-                  <div class="sny-icon-content">
-                    <h4>
-                      About Me
-                    </h4>
-                    <p>
-                      My name is Habtamu Assegahegn. I'm an energetic professional who strives for technology growth.
-                      I love to create, innovate, and find solutions to problems that make tasks easier for people.
-                      I'm open and ready to learn and keep myself updated. Want to know more? Just ask!
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="break"></div>
-            </section>
-          </div>
-        
-          <!-- End Contact Data -->
-          <!-- ----------------------------------------------------------------------------------- -->
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="hero-greeting">Hello, I'm</p>
+        <h1 class="hero-name">Habtamu Assegahegn</h1>
+        <p class="hero-tagline">Full Stack Developer · Embedded Systems · AI Enthusiast</p>
+        <p class="hero-bio">I build software and hardware solutions. I love to create, innovate, and solve problems that make life easier.</p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">View projects</a>
+          <a href="#contact" class="btn btn-outline">Get in touch</a>
         </div>
       </div>
-</body>
+      <div class="hero-bg" aria-hidden="true"></div>
+    </section>
 
+    <section id="about" class="section about">
+      <div class="container">
+        <h2 class="section-title">About me</h2>
+        <div class="about-grid">
+          <div class="about-photo">
+            <img src="./images/my.jpg" alt="Habtamu Assegahegn">
+          </div>
+          <div class="about-content">
+            <h3>Habtamu Assegahegn</h3>
+            <p class="about-role">Developer · Embedded System Designer</p>
+            <p>I'm an energetic professional who strives for technology growth. I love to create, innovate, and find solutions to problems that make tasks easier for people. I'm open and ready to learn and keep myself updated.</p>
+            <div class="about-links">
+              <a href="#skills">View my skills</a>
+              <a href="#projects">View my projects</a>
+              <a href="#contact">Hire me for your next project</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section skills">
+      <div class="container">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-grid">
+          <div class="skills-block">
+            <h3>Programming & tools</h3>
+            <ul class="skill-tags">
+              <li>Node.js</li><li>React</li><li>Next.js</li><li>Spring Boot</li><li>C#</li><li>ASP.NET</li><li>Python</li><li>Java</li><li>PHP</li><li>Dart</li><li>HTML</li><li>CSS</li><li>SQL</li><li>C++</li><li>C</li><li>MySQL</li>
+            </ul>
+          </div>
+          <div class="skills-block">
+            <h3>Databases & infrastructure</h3>
+            <ul class="skill-tags">
+              <li>PostgreSQL</li><li>SQL Server</li><li>Redis</li><li>Docker</li><li>Oracle DBMS</li><li>SQLite</li><li>XAMPP</li><li>Database management</li><li>Web Development</li><li>Android Development</li><li>Embedded systems</li><li>Data visualization</li><li>Image processing</li><li>Machine learning</li><li>Linux</li>
+            </ul>
+          </div>
+          <div class="skills-block">
+            <h3>Hobbies</h3>
+            <ul class="skill-tags hobbies">
+              <li>Coding</li><li>Reading</li><li>Movies</li><li>Music</li><li>Hiking</li><li>DIY Electronics</li><li>Meditation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section projects">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <div class="project-grid">
+          <article class="project-card" data-modal="project_farm">
+            <div class="project-card-image"><img src="./images/farm5.png" alt="Smart Farming"></div>
+            <h3>Smart Farming</h3>
+            <p>Real-time sensor data for farmers via dashboard & SMS. Hardware + software.</p>
+          </article>
+          <article class="project-card" data-modal="project_feta">
+            <div class="project-card-image"><img src="./images/feta.jpg" alt="FetaMovies"></div>
+            <h3>FetaMovies</h3>
+            <p>Movie streaming site with HD content for registered users.</p>
+          </article>
+          <article class="project-card" data-modal="project_lms">
+            <div class="project-card-image"><img src="./images/lms.jpg" alt="LMS"></div>
+            <h3>Learning Management System</h3>
+            <p>Register students, add courses, and run tests online.</p>
+          </article>
+          <article class="project-card" data-modal="project_pygame">
+            <div class="project-card-image"><img src="./images/pygame.png" alt="Python Game"></div>
+            <h3>Simple Python Game</h3>
+            <p>Car game built with the Pygame library.</p>
+          </article>
+          <article class="project-card" data-modal="project_pay">
+            <div class="project-card-image"><img src="./images/pay.png" alt="Payroll System"></div>
+            <h3>Advanced Payroll System</h3>
+            <p>Management system for payroll and related tasks.</p>
+          </article>
+          <article class="project-card" data-modal="project_hospital">
+            <div class="project-card-image project-card-placeholder" data-icon="hospital">
+              <i class="fa-solid fa-hospital" aria-hidden="true"></i>
+            </div>
+            <h3>Hospital Management System</h3>
+            <p>End-to-end hospital management: patients, appointments, records, and operations.</p>
+          </article>
+          <article class="project-card" data-modal="project_attendance">
+            <div class="project-card-image project-card-placeholder" data-icon="clock">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+            </div>
+            <h3>Attendance System</h3>
+            <p>Track and manage employee or student attendance with reports and dashboards.</p>
+          </article>
+          <article class="project-card" data-modal="project_hr">
+            <div class="project-card-image project-card-placeholder" data-icon="users">
+              <i class="fa-solid fa-users" aria-hidden="true"></i>
+            </div>
+            <h3>HR System</h3>
+            <p>Human resources management: employees, leave, performance, and payroll integration.</p>
+          </article>
+          <article class="project-card" data-modal="project_bank">
+            <div class="project-card-image project-card-placeholder" data-icon="bank">
+              <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
+            </div>
+            <h3>Bank Customer Onboarding</h3>
+            <p>Web app, mobile app, and USSD for bank customer onboarding and account setup.</p>
+          </article>
+          <article class="project-card" data-modal="project_logistics">
+            <div class="project-card-image project-card-placeholder" data-icon="truck">
+              <i class="fa-solid fa-truck-fast" aria-hidden="true"></i>
+            </div>
+            <h3>Logistics Management System</h3>
+            <p>Uber Freight–style logistics: freight booking, tracking, and fleet management. Web + mobile.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-grid">
+          <div class="contact-card">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <h4>Location</h4>
+            <p>Addis Ababa, Ethiopia</p>
+          </div>
+          <div class="contact-card">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            <h4>Email</h4>
+            <p><a href="mailto:habtamuassegahegn7@gmail.com">habtamuassegahegn7@gmail.com</a></p>
+            <p><a href="mailto:habtamu.asegahegn@du.edu.et">habtamu.asegahegn@du.edu.et</a></p>
+          </div>
+          <div class="contact-card">
+            <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+            <h4>LinkedIn</h4>
+            <p><a href="https://www.linkedin.com/in/habtamu-assegahegn-15a554177/" target="_blank" rel="noopener">Habtamu Assegahegn</a></p>
+          </div>
+          <div class="contact-card">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+            <h4>GitHub</h4>
+            <p><a href="https://github.com/habtamuDes" target="_blank" rel="noopener">habtamuDes</a></p>
+          </div>
+          <div class="contact-card">
+            <i class="fa-brands fa-facebook" aria-hidden="true"></i>
+            <h4>Facebook</h4>
+            <p><a href="https://www.facebook.com/habtamuassegahegn" target="_blank" rel="noopener">Habtamu Assegahegn</a></p>
+          </div>
+          <div class="contact-card">
+            <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+            <h4>X (Twitter)</h4>
+            <p><a href="https://twitter.com/habtamuassegah1" target="_blank" rel="noopener">@habtamuassegah1</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Habtamu Assegahegn. Built for GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <!-- Project modals -->
+  <div id="project_farm" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_farm_title" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
+      <h2 id="modal_farm_title" class="modal-title">Smart Farming</h2>
+      <img src="images/farm5.jpg" alt="" class="modal-img">
+      <p class="modal-desc">Smart farming helps farmers and growers with real-time sensor data through a dashboard and SMS. It includes both hardware and software.</p>
+      <p><strong>Tech:</strong> PHP, Vue.js, PostgreSQL, REST API, PWA, C, C++</p>
+      <p><strong>Hardware:</strong> Arduino, NodeMCU, DHT11, soil moisture, water pump, water level, LCD</p>
+    </div>
+  </div>
+
+  <div id="project_feta" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_feta_title" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
+      <h2 id="modal_feta_title" class="modal-title">FetaMovies</h2>
+      <img src="images/feta1.jpg" alt="" class="modal-img">
+      <p class="modal-desc">FetaMovies is a movie streaming site that provides HD movies for registered users.</p>
+      <p><strong>Tech:</strong> PHP, HTML, CSS</p>
+    </div>
+  </div>
+
+  <div id="project_lms" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_lms_title" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
+      <h2 id="modal_lms_title" class="modal-title">Learning Management System</h2>
+      <img src="images/lms.jpg" alt="" class="modal-img">
+      <p class="modal-desc">LMS lets you register students, add courses, and give tests online.</p>
+      <p><strong>Tech:</strong> Python, HTML, CSS, AJAX, JavaScript, Django</p>
+    </div>
+  </div>
+
+  <div id="project_pygame" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_pygame_title" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
+      <h2 id="modal_pygame_title" class="modal-title">Simple Python Game</h2>
+      <img src="images/pygame1.png" alt="" class="modal-img">
+      <p class="modal-desc">A simple car game made with the Python Pygame library.</p>
+      <p><strong>Tech:</strong> Python (Pygame)</p>
+    </div>
+  </div>
+
+  <div id="project_pay" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_pay_title" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
+      <h2 id="modal_pay_title" class="modal-title">Advanced Payroll Management System</h2>
+      <img src="images/pay.png" alt="" class="modal-img">
+      <p class="modal-desc">Management system for payroll and related business tasks.</p>
+      <p><strong>Tech:</strong> Java, JDBC, Oracle</p>
+    </div>
+  </div>
+
+  <div id="project_hospital" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_hospital_title" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
+      <h2 id="modal_hospital_title" class="modal-title">Hospital Management System</h2>
+      <div class="modal-placeholder"><i class="fa-solid fa-hospital" aria-hidden="true"></i></div>
+      <p class="modal-desc">End-to-end hospital management system covering patient registration, appointments, medical records, billing, and day-to-day operations.</p>
+      <p><strong>Platform:</strong> Web application</p>
+      <p><strong>Tech:</strong> React, Next.js, Node.js, Spring Boot, ASP.NET, PostgreSQL, SQL Server, Redis, Docker</p>
+    </div>
+  </div>
+
+  <div id="project_attendance" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_attendance_title" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
+      <h2 id="modal_attendance_title" class="modal-title">Attendance System</h2>
+      <div class="modal-placeholder"><i class="fa-solid fa-clock" aria-hidden="true"></i></div>
+      <p class="modal-desc">System to track and manage employee or student attendance with check-in/check-out, reports, and dashboards.</p>
+      <p><strong>Platform:</strong> Web application</p>
+      <p><strong>Tech:</strong> React, Node.js, Spring Boot, PostgreSQL, Redis, Docker</p>
+    </div>
+  </div>
+
+  <div id="project_hr" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_hr_title" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
+      <h2 id="modal_hr_title" class="modal-title">HR System</h2>
+      <div class="modal-placeholder"><i class="fa-solid fa-users" aria-hidden="true"></i></div>
+      <p class="modal-desc">Human resources management system for employee data, leave management, performance tracking, and payroll integration.</p>
+      <p><strong>Platform:</strong> Web application</p>
+      <p><strong>Tech:</strong> React, ASP.NET, PostgreSQL, SQL Server, Redis, Docker</p>
+    </div>
+  </div>
+
+  <div id="project_bank" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_bank_title" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
+      <h2 id="modal_bank_title" class="modal-title">Bank Customer Onboarding System</h2>
+      <div class="modal-placeholder"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></div>
+      <p class="modal-desc">Web app, mobile app, and USSD for bank customer onboarding: account opening, KYC, and digital onboarding. USSD enables access from feature phones (e.g. *123#).</p>
+      <p><strong>Platform:</strong> Web app + Mobile app + USSD</p>
+      <p><strong>Tech:</strong> React, Next.js, Node.js, Spring Boot, ASP.NET, PostgreSQL, SQL Server, Redis, Docker, USSD gateway</p>
+    </div>
+  </div>
+
+  <div id="project_logistics" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_logistics_title" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
+      <h2 id="modal_logistics_title" class="modal-title">Logistics Management System</h2>
+      <div class="modal-placeholder"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i></div>
+      <p class="modal-desc">Uber Freight–style logistics platform: freight booking, carrier matching, real-time tracking, and fleet management. Available on web and mobile.</p>
+      <p><strong>Platform:</strong> Web app + Mobile app</p>
+      <p><strong>Tech:</strong> React, Next.js, Node.js, Spring Boot, ASP.NET, PostgreSQL, SQL Server, Redis, Docker</p>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
 </html>

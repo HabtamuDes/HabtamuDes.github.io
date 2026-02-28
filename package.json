@@ -1,0 +1,13 @@
+{
+  "name": "habtamu-portfolio",
+  "private": true,
+  "scripts": {
+    "start": "serve -l 3333 .",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "serve": "^14.2.0"
+  }
+}

@@ -1,22 +1,38 @@
 # Habtamu Assegahegn — Portfolio
 
-Personal portfolio site hosted on GitHub Pages.
+Personal portfolio site (single-page, dark theme) hosted on GitHub Pages.
 
 ## Stack
 
-- Static HTML/CSS/JS
-- [jQuery](https://jquery.com/) (loaded from CDN; optional fallback: add `jquery-3.7.1.min.js` to `js/vendor/`)
+- Static HTML/CSS/JS (no jQuery)
 - [Font Awesome 6](https://fontawesome.com/) for icons
-- [DM Sans](https://fonts.google.com/specimen/DM+Sans) (Google Fonts)
+- [Outfit](https://fonts.google.com/specimen/Outfit) (Google Fonts)
 
 ## Run locally
 
-Open `index.html` in a browser or use a local server:
+```bash
+npm install
+npm start
+# Open http://localhost:3333
+```
+
+Or open `index.html` directly in a browser.
+
+## View in Playwright
+
+To open the site in a browser and take screenshots:
 
 ```bash
-npx serve .
-# or
-python -m http.server 8000
+npm install
+npx playwright install
+npm run test:headed
+```
+
+To capture a full-page screenshot:
+
+```bash
+npm test
+# Screenshot saved to test-results/portfolio-full.png
 ```
 
 ## Deploy
