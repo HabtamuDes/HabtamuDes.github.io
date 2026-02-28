@@ -1,16 +1,13 @@
-$(document).ready( function() {
-
-	// Logo
-	var $logo 	= $('#logo');
-    var $hellologo = $('#helloworld');
-	 if (location.href.indexOf("#") != -1) {
-        if(location.href.substr(location.href.indexOf("#"))!='#about'){
-        	$logo.show();
-        }
-        else{
-            $hellologo.show();
-        }
-    }
+$(document).ready(function() {
+	var $logo = $('#logo');
+	var $hellologo = $('#helloworld');
+	if (location.href.indexOf("#") !== -1) {
+		if (location.href.substr(location.href.indexOf("#")) !== '#about') {
+			$logo.show();
+		} else {
+			$hellologo.show();
+		}
+	}
     
 	// Show logo 
 	$('#tab-container .tab a').click(function() {

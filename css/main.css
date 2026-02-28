@@ -1,5 +1,15 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
-@import url(http://fonts.googleapis.com/css?family=Lato:400,700);
+/* Fonts loaded in index.html */
+
+/* Icon mapping for Font Awesome 6 */
+.icon-user::before { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f007"; margin-right: 0.35em; }
+.icon-file-text::before { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f15c"; margin-right: 0.35em; }
+.icon-heart::before { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f004"; margin-right: 0.35em; }
+.icon-envelope::before { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f0e0"; margin-right: 0.35em; }
+.icon-facebook::before { font-family: "Font Awesome 6 Brands"; content: "\f09a"; margin-right: 0.35em; }
+.icon-linkdin::before { font-family: "Font Awesome 6 Brands"; content: "\f08c"; margin-right: 0.35em; }
+.icon-twitter::before { font-family: "Font Awesome 6 Brands"; content: "\f099"; margin-right: 0.35em; }
+.icon-globe::before { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f0ac"; margin-right: 0.35em; }
+.icon-phone::before { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f095"; margin-right: 0.35em; }
 
 *, *:before, *:after {
   -moz-box-sizing: border-box;
@@ -42,9 +52,8 @@ body {
 /* 16px base font size with 150% (24px) friendly, unitless line height and margin for vertical rhythm */
 /* Font-size percentage is based on 16px browser default size */
 body, button, input, select, textarea {
-  font: 100% 'Lato', sans-serif;
-  *font-size: 1em;
-  color: #555
+  font: 100% 'DM Sans', system-ui, sans-serif;
+  color: #555;
 }
 
 /* IE7 and older can't resize px based text */
@@ -56,8 +65,8 @@ p, blockquote, q, pre, address, hr, code, samp, dl, ol, ul, form, table, fieldse
 /* TYPOGRAPHY */
 /* Composed to a scale of 12px, 14px, 16px, 18px, 21px, 24px, 36px, 48px, 60px and 72px */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Open Sans', sans-serif;
-  color: #444;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: #1a1a1a;
 }
 
 h1 {
@@ -160,8 +169,8 @@ th {
 }
 
 th {
-  padding: 800px;
-  border-bottom: 0 solid #333
+  padding: 8px;
+  border-bottom: 1px solid #333;
 }
 
 /* FORMS */
@@ -479,6 +488,7 @@ body {
   display: none;
 }
 
+#hello-header #helloworld,
 #header #helloworld {
   text-align: center;
   display: none;
@@ -504,24 +514,21 @@ body {
 }
 
 #tab-data-wrap {
-  padding: 30px 20px;
+  padding: 32px 24px;
   background: #fff;
-  border: 1px solid #f1f1f1;
-  box-shadow: 0px 6px #2E8B57;
-  border-radius: 0px 0px 4px 4px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 4px 24px rgba(46, 139, 87, 0.12);
+  border-radius: 12px;
 }
 
 .tab {
   display: inline-block;
-  zoom: 1;
-  *display: inline;
   background: #fff;
-  border: solid 1px #f1f1f1;
-  border-bottom: 0px;
-  border-radius: 4px 4px 0 0;
-  -moz-border-radius: 4px 4px 0 0;
-  -webkit-border-radius: 4px 4px 0 0;
-  margin-right: 10px;
+  border: 1px solid #e8e8e8;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  margin-right: 8px;
+  transition: background 0.2s, color 0.2s;
 }
 
 .tab a {
@@ -540,10 +547,10 @@ body {
 }
 
 .tab.active {
-  background: #ccffcc;
+  background: #e8f5e9;
   position: relative;
   top: 1px;
-  border-color: #f1f1f1;
+  border-color: #2E8B57;
   border-bottom: none;
 }
 
@@ -758,19 +765,16 @@ body {
   display: inline-block;
   margin: 0 10px 10px 0;
   padding: 14px 20px;
-  background: #E74C3C;
+  background: #2E8B57;
   color: #fff;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 13px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'DM Sans', system-ui, sans-serif;
   line-height: 1;
-  *display: inline;
-  *zoom: 1;
   position: relative;
   text-transform: uppercase;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
+  border-radius: 8px;
+  transition: background 0.2s, transform 0.15s;
 }
 
 .btn:hover {
@@ -854,11 +858,16 @@ body {
 
 .project-container {
   max-width: 240px;
-  border-radius: 5px;
-  background-color: #5cb85c;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #2E8B57 0%, #228B22 100%);
   color: #fff;
   cursor: pointer;
-  box-shadow: 2px 2px 5px 3px #5cb85c27;
+  box-shadow: 0 4px 14px rgba(46, 139, 87, 0.25);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.project-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(46, 139, 87, 0.3);
 }
 
 .project-img-container {
@@ -1034,7 +1043,7 @@ input[type=text], .project_description, input[type=url] {
   background-color: #2c3e50;
 }
 
-.pomengrate>span {
+.pomegranate>span {
   background-color: #c0392b;
 }
 
