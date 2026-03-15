@@ -1,0 +1,44 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#050816"/>
+  <rect x="36" y="36" width="1128" height="558" rx="28" fill="url(#bg)" stroke="rgba(255,255,255,0.12)"/>
+  <rect x="76" y="92" width="1048" height="446" rx="24" fill="rgba(5,10,22,0.88)" stroke="rgba(255,255,255,0.08)"/>
+  <rect x="76" y="92" width="1048" height="32" rx="24" fill="rgba(255,255,255,0.06)"/>
+  <circle cx="102" cy="108" r="5" fill="#F97316"/>
+  <circle cx="122" cy="108" r="5" fill="#FACC15"/>
+  <circle cx="142" cy="108" r="5" fill="#22C55E"/>
+  <rect x="176" y="100" width="176" height="16" rx="8" fill="rgba(255,255,255,0.08)"/>
+  <rect x="906" y="100" width="180" height="16" rx="8" fill="rgba(255,255,255,0.08)"/>
+  <rect x="120" y="164" width="376" height="214" rx="28" fill="rgba(15,23,42,0.82)" stroke="rgba(255,255,255,0.1)"/>
+  <rect x="146" y="192" width="160" height="14" rx="7" fill="#FDBA74" fill-opacity="0.6"/>
+  <text x="146" y="254" fill="white" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700">Habtamu</text>
+  <text x="146" y="300" fill="white" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700">Assegahegn</text>
+  <text x="146" y="336" fill="rgba(255,255,255,0.72)" font-family="Segoe UI, Arial, sans-serif" font-size="22">Full Stack Developer | Embedded Systems | AI</text>
+  <rect x="146" y="366" width="122" height="44" rx="14" fill="rgba(249,115,22,0.16)" stroke="rgba(249,115,22,0.34)"/>
+  <text x="170" y="394" fill="#FED7AA" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="600">GitHub Pages</text>
+  <rect x="548" y="166" width="488" height="274" rx="26" fill="rgba(15,23,42,0.82)" stroke="rgba(255,255,255,0.1)"/>
+  <rect x="576" y="194" width="140" height="14" rx="7" fill="rgba(255,255,255,0.12)"/>
+  <rect x="576" y="228" width="192" height="76" rx="18" fill="url(#cardA)"/>
+  <rect x="786" y="228" width="220" height="76" rx="18" fill="url(#cardB)"/>
+  <rect x="576" y="322" width="430" height="90" rx="18" fill="rgba(255,255,255,0.04)"/>
+  <text x="602" y="272" fill="white" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Interactive Ubuntu Desktop</text>
+  <text x="602" y="356" fill="rgba(255,255,255,0.74)" font-family="Segoe UI, Arial, sans-serif" font-size="20">Portfolio apps, draggable windows, notes, games,</text>
+  <text x="602" y="384" fill="rgba(255,255,255,0.74)" font-family="Segoe UI, Arial, sans-serif" font-size="20">developer tools, and project case studies.</text>
+  <rect x="1060" y="166" width="24" height="274" rx="12" fill="rgba(255,255,255,0.04)"/>
+  <rect x="1064" y="188" width="16" height="46" rx="8" fill="url(#cardA)"/>
+  <rect x="76" y="558" width="1048" height="8" rx="4" fill="rgba(255,255,255,0.06)"/>
+  <defs>
+    <linearGradient id="bg" x1="78" y1="64" x2="1126" y2="566" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="0.5" stop-color="#111827"/>
+      <stop offset="1" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="cardA" x1="576" y1="228" x2="786" y2="304" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F97316"/>
+      <stop offset="1" stop-color="#FB7185"/>
+    </linearGradient>
+    <linearGradient id="cardB" x1="786" y1="228" x2="1006" y2="304" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+  </defs>
+</svg>

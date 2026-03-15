@@ -1,0 +1,37 @@
+Habtamu Assegahegn
+Addis Ababa, Ethiopia
+Email: habtamuassegahegn7@gmail.com
+GitHub: https://github.com/habtamuDes
+LinkedIn: https://www.linkedin.com/in/habtamu-assegahegn-15a554177/
+
+PROFESSIONAL SUMMARY
+Full stack developer with interest in embedded systems and AI-assisted solutions. Experience building business platforms,
+enterprise workflows, education systems, consumer web products, and sensor-connected applications.
+
+FOCUS AREAS
+- Full stack web development
+- Embedded systems and IoT-style projects
+- Enterprise and operations software
+- Practical AI-assisted engineering workflows
+
+TECHNICAL SKILLS
+- Frontend and Web: React, Next.js, HTML, CSS, JavaScript
+- Backend and Platforms: Node.js, Spring Boot, ASP.NET, PHP, Django
+- Languages: Python, Java, C#, C++, C, Dart
+- Databases and Infrastructure: PostgreSQL, SQL Server, MySQL, MongoDB, Redis, Docker, Linux, Oracle
+- Specializations: Embedded Systems, Machine Learning, Android Development, Data Visualization, Image Processing
+
+SELECTED PROJECTS
+- Smart Farming
+  Real-time sensor data platform using dashboards and notifications for field monitoring.
+- Hospital Management
+  End-to-end hospital workflow system for appointments, patient records, and administration.
+- Learning Management System
+  Academic platform for registration, course management, and testing.
+- Payroll System
+  Payroll workflow system for salary-related business operations.
+- Logistics System
+  Operational platform for booking, fleet management, and logistics tracking.
+
+CONTACT
+Open to software engineering roles, practical product development, and collaboration opportunities.

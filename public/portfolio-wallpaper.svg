@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#060811"/>
+      <stop offset="0.45" stop-color="#0F1730"/>
+      <stop offset="0.72" stop-color="#1B1330"/>
+      <stop offset="1" stop-color="#06070E"/>
+    </linearGradient>
+    <radialGradient id="glowOrange" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(360 220) rotate(20) scale(430 260)">
+      <stop stop-color="#E95420" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#E95420" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowBlue" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1180 280) rotate(-14) scale(520 300)">
+      <stop stop-color="#5EA3FF" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#5EA3FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowBottom" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(960 760) rotate(-8) scale(700 220)">
+      <stop stop-color="#7C3AED" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#7C3AED" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#glowOrange)"/>
+  <rect width="1600" height="900" fill="url(#glowBlue)"/>
+  <rect width="1600" height="900" fill="url(#glowBottom)"/>
+
+  <g opacity="0.08" stroke="#FFFFFF" stroke-width="1">
+    <path d="M-20 640C190 574 388 556 610 592C810 624 981 700 1228 684C1388 673 1482 624 1608 548"/>
+    <path d="M156 122C306 206 450 236 612 206C786 174 894 74 1082 78C1238 82 1384 162 1532 270"/>
+    <path d="M98 448C260 386 418 392 586 454C776 524 890 614 1060 614C1232 614 1362 548 1516 432"/>
+  </g>
+
+  <g opacity="0.10" fill="#FFFFFF">
+    <circle cx="198" cy="176" r="84"/>
+    <circle cx="1328" cy="204" r="122"/>
+    <circle cx="1180" cy="712" r="88"/>
+  </g>
+
+  <g opacity="0.92" fill="#FFFFFF" font-family="Ubuntu, Arial, sans-serif">
+    <text x="126" y="142" font-size="30" font-weight="700">Habtamu Assegahegn</text>
+    <text x="126" y="184" font-size="18" opacity="0.78">Full Stack Developer | Embedded Systems | AI</text>
+    <text x="126" y="228" font-size="14" opacity="0.58">Ubuntu-inspired engineering workspace</text>
+  </g>
+</svg>
