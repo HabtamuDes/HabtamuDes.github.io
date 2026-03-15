@@ -10,8 +10,11 @@ import {
   GitBranch,
   Globe,
   Grid3x3,
+  LayoutPanelTop,
   Mail,
+  Minimize2,
   NotebookPen,
+  PanelsTopLeft,
   RotateCcw,
   Send,
   ServerCog,
@@ -19,6 +22,7 @@ import {
   Terminal,
   Type,
   User,
+  X,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { AppId } from "@/pages/Index";
@@ -45,6 +49,13 @@ type IconLayout = {
   order: number;
 };
 
+type PanelState = {
+  x: number;
+  y: number;
+  minimized: boolean;
+  visible: boolean;
+};
+
 const desktopIcons: DesktopIconDef[] = [
   { id: "about", icon: User, label: "About Me" },
   { id: "experience", icon: BadgeCheck, label: "Experience" },
@@ -69,6 +80,8 @@ const desktopIcons: DesktopIconDef[] = [
 const WORKSPACE_CARD_STORAGE_KEY = "habtamu-portfolio:workspace-card";
 const GUIDE_CARD_STORAGE_KEY = "habtamu-portfolio:guide-card";
 const ICON_LAYOUT_STORAGE_KEY = "habtamu-portfolio:icon-layout";
+const WORKSPACE_PANEL_STORAGE_KEY = "habtamu-portfolio:workspace-panel";
+const ICON_MENU_PANEL_STORAGE_KEY = "habtamu-portfolio:icon-menu-panel";
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
@@ -102,6 +115,24 @@ const normalizeLayouts = (stored: IconLayout[]) => {
 };
 
 const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLabels, copy }: UbuntuDesktopProps) => {
+  const getStoredPanelState = useCallback((storageKey: string, fallback: PanelState) => {
+    if (typeof window === "undefined") return fallback;
+
+    try {
+      const raw = window.localStorage.getItem(storageKey);
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw) as Partial<PanelState>;
+      return {
+        x: typeof parsed?.x === "number" ? parsed.x : fallback.x,
+        y: typeof parsed?.y === "number" ? parsed.y : fallback.y,
+        minimized: typeof parsed?.minimized === "boolean" ? parsed.minimized : fallback.minimized,
+        visible: typeof parsed?.visible === "boolean" ? parsed.visible : fallback.visible,
+      };
+    } catch {
+      return fallback;
+    }
+  }, []);
+
   const [cardPosition, setCardPosition] = useState(() => {
     if (typeof window === "undefined") return { x: 40, y: 80 };
     try {
@@ -136,10 +167,22 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
       return getDefaultIconLayouts();
     }
   });
+  const [workspacePanel, setWorkspacePanel] = useState<PanelState>(() =>
+    getStoredPanelState(WORKSPACE_PANEL_STORAGE_KEY, { x: 40, y: 80, minimized: false, visible: true }),
+  );
+  const [iconPanel, setIconPanel] = useState<PanelState>(() =>
+    getStoredPanelState(ICON_MENU_PANEL_STORAGE_KEY, {
+      x: 40,
+      y: 360,
+      minimized: false,
+      visible: true,
+    }),
+  );
 
   const dragRef = useRef<{ startX: number; startY: number; x: number; y: number } | null>(null);
   const guideDragRef = useRef<{ startX: number; startY: number; x: number; y: number } | null>(null);
   const iconDragRef = useRef<{ id: AppId; startX: number; startY: number; x: number; y: number } | null>(null);
+  const iconPanelDragRef = useRef<{ startX: number; startY: number; x: number; y: number } | null>(null);
 
   const clampPosition = useCallback((x: number, y: number, width = 480, height = 300) => {
     const maxX = Math.max(16, window.innerWidth - width - 16);
@@ -176,7 +219,9 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
   useEffect(() => {
     const handleResize = () => {
       setCardPosition((prev) => clampPosition(prev.x, prev.y));
+      setWorkspacePanel((prev) => ({ ...prev, ...clampPosition(prev.x, prev.y) }));
       setGuidePosition((prev) => clampPosition(prev.x, prev.y, 448, 520));
+      setIconPanel((prev) => ({ ...prev, ...clampPosition(prev.x, prev.y, 276, prev.minimized ? 72 : 96) }));
       setIconLayouts((prev) =>
         prev.map((layout) => {
           const next = clampIconPosition(layout.x, layout.y);
@@ -200,6 +245,14 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
   useEffect(() => {
     window.localStorage.setItem(ICON_LAYOUT_STORAGE_KEY, JSON.stringify(iconLayouts));
   }, [iconLayouts]);
+
+  useEffect(() => {
+    window.localStorage.setItem(WORKSPACE_PANEL_STORAGE_KEY, JSON.stringify(workspacePanel));
+  }, [workspacePanel]);
+
+  useEffect(() => {
+    window.localStorage.setItem(ICON_MENU_PANEL_STORAGE_KEY, JSON.stringify(iconPanel));
+  }, [iconPanel]);
 
   const orderedIcons = useMemo(() => {
     const orderMap = new Map(iconLayouts.map((item) => [item.id, item]));
@@ -233,6 +286,59 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
     window.addEventListener("pointermove", handleMouseMove);
     window.addEventListener("pointerup", handleMouseUp);
   }, [cardPosition.x, cardPosition.y, clampPosition]);
+
+  const handleWorkspacePanelMouseDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    if (isCompact) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    dragRef.current = { startX: event.clientX, startY: event.clientY, x: workspacePanel.x, y: workspacePanel.y };
+    document.body.style.userSelect = "none";
+    const handleMouseMove = (moveEvent: PointerEvent) => {
+      if (!dragRef.current) return;
+      const next = clampPosition(
+        dragRef.current.x + (moveEvent.clientX - dragRef.current.startX),
+        dragRef.current.y + (moveEvent.clientY - dragRef.current.startY),
+      );
+      setWorkspacePanel((prev) => ({ ...prev, ...next }));
+      setCardPosition(next);
+    };
+    const handleMouseUp = () => {
+      dragRef.current = null;
+      document.body.style.userSelect = "";
+      window.removeEventListener("pointermove", handleMouseMove);
+      window.removeEventListener("pointerup", handleMouseUp);
+    };
+    window.addEventListener("pointermove", handleMouseMove);
+    window.addEventListener("pointerup", handleMouseUp);
+  }, [clampPosition, isCompact, workspacePanel.x, workspacePanel.y]);
+
+  const handleIconPanelMouseDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    if (isCompact) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    iconPanelDragRef.current = { startX: event.clientX, startY: event.clientY, x: iconPanel.x, y: iconPanel.y };
+    document.body.style.userSelect = "none";
+    const handleMouseMove = (moveEvent: PointerEvent) => {
+      if (!iconPanelDragRef.current) return;
+      const next = clampPosition(
+        iconPanelDragRef.current.x + (moveEvent.clientX - iconPanelDragRef.current.startX),
+        iconPanelDragRef.current.y + (moveEvent.clientY - iconPanelDragRef.current.startY),
+        276,
+        iconPanel.minimized ? 72 : 96,
+      );
+      setIconPanel((prev) => ({ ...prev, ...next }));
+    };
+    const handleMouseUp = () => {
+      iconPanelDragRef.current = null;
+      document.body.style.userSelect = "";
+      window.removeEventListener("pointermove", handleMouseMove);
+      window.removeEventListener("pointerup", handleMouseUp);
+    };
+    window.addEventListener("pointermove", handleMouseMove);
+    window.addEventListener("pointerup", handleMouseUp);
+  }, [clampPosition, iconPanel.minimized, iconPanel.x, iconPanel.y, isCompact]);
 
   const handleGuideMouseDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -286,48 +392,151 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
 
   return (
     <>
-      <div className={`absolute border border-white/10 bg-slate-950/35 shadow-2xl backdrop-blur-2xl ${isCompact ? "left-3 right-3 top-16 z-[5] rounded-[24px] p-4" : "z-30 max-w-lg rounded-[28px] p-6"}`} style={isCompact ? undefined : { left: cardPosition.x, top: cardPosition.y }}>
-        <div className={`mb-3 flex items-center justify-between rounded-2xl border border-white/8 bg-white/5 px-3 py-2 ${isCompact ? "" : "cursor-grab touch-none active:cursor-grabbing"}`} onPointerDown={isCompact ? undefined : handleCardMouseDown}>
-          <p className="text-[11px] uppercase tracking-[0.28em] text-orange-200/75">{copy.engineerWorkspace}</p>
-          {!isCompact && <span className="text-[10px] text-white/45">{copy.dragCard}</span>}
+      {workspacePanel.visible ? (
+        <div
+          className={`absolute border border-white/10 bg-slate-950/35 shadow-2xl backdrop-blur-2xl ${isCompact ? "left-3 right-3 top-16 z-[5] rounded-[24px] p-4" : "z-30 max-w-lg rounded-[28px] p-6"}`}
+          style={isCompact ? undefined : { left: workspacePanel.x, top: workspacePanel.y }}
+          data-testid="workspace-panel"
+        >
+          <div
+            className={`mb-3 flex items-center justify-between rounded-2xl border border-white/8 bg-white/5 px-3 py-2 ${isCompact ? "" : "cursor-grab touch-none active:cursor-grabbing"}`}
+            onPointerDown={isCompact ? undefined : handleWorkspacePanelMouseDown}
+          >
+            <div className="min-w-0">
+              <p className="text-[11px] uppercase tracking-[0.28em] text-orange-200/75">{copy.engineerWorkspace}</p>
+              {!isCompact && <span className="text-[10px] text-white/45">{copy.dragCard}</span>}
+            </div>
+            <div className="ml-3 flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setWorkspacePanel((prev) => ({ ...prev, minimized: !prev.minimized }))}
+                className="rounded-lg border border-white/10 bg-white/5 p-2 text-white/65 transition-colors hover:bg-white/10 hover:text-white"
+                aria-label={workspacePanel.minimized ? "Expand workspace panel" : "Minimize workspace panel"}
+                data-testid="workspace-minimize"
+              >
+                <Minimize2 className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setWorkspacePanel((prev) => ({ ...prev, visible: false }))}
+                className="rounded-lg border border-white/10 bg-white/5 p-2 text-white/65 transition-colors hover:bg-white/10 hover:text-white"
+                aria-label="Close workspace panel"
+                data-testid="workspace-close"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+          {!workspacePanel.minimized && (
+            <>
+              <h1 className={`${isCompact ? "text-2xl" : "text-3xl"} font-display font-bold text-white`}>Habtamu Assegahegn</h1>
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-white/78">{copy.summary}</p>
+              <div className={`mt-5 grid text-left ${isCompact ? "grid-cols-1 gap-2" : "grid-cols-3 gap-3"}`}>
+                <div className="rounded-2xl border border-white/8 bg-white/5 px-3 py-3">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-white/45">{copy.focus}</p>
+                  <p className="mt-1 text-sm font-display font-medium text-white">{copy.focusValue}</p>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-white/5 px-3 py-3">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-white/45">{copy.hardware}</p>
+                  <p className="mt-1 text-sm font-display font-medium text-white">{copy.hardwareValue}</p>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-white/5 px-3 py-3">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-white/45">{copy.base}</p>
+                  <p className="mt-1 text-sm font-display font-medium text-white">{copy.baseValue}</p>
+                </div>
+              </div>
+              <p className="mt-4 text-xs text-white/58">{copy.openHint}</p>
+            </>
+          )}
         </div>
-        <h1 className={`${isCompact ? "text-2xl" : "text-3xl"} font-display font-bold text-white`}>Habtamu Assegahegn</h1>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-white/78">{copy.summary}</p>
-        <div className={`mt-5 grid text-left ${isCompact ? "grid-cols-1 gap-2" : "grid-cols-3 gap-3"}`}>
-          <div className="rounded-2xl border border-white/8 bg-white/5 px-3 py-3">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-white/45">{copy.focus}</p>
-            <p className="mt-1 text-sm font-display font-medium text-white">{copy.focusValue}</p>
-          </div>
-          <div className="rounded-2xl border border-white/8 bg-white/5 px-3 py-3">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-white/45">{copy.hardware}</p>
-            <p className="mt-1 text-sm font-display font-medium text-white">{copy.hardwareValue}</p>
-          </div>
-          <div className="rounded-2xl border border-white/8 bg-white/5 px-3 py-3">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-white/45">{copy.base}</p>
-            <p className="mt-1 text-sm font-display font-medium text-white">{copy.baseValue}</p>
-          </div>
-        </div>
-        <p className="mt-4 text-xs text-white/58">{copy.openHint}</p>
-      </div>
+      ) : null}
 
-      <div className={`absolute flex items-center gap-2 rounded-2xl border border-white/10 bg-slate-950/68 px-3 py-2 backdrop-blur-xl ${isCompact ? "left-3 right-3 top-[13.75rem] z-[6] justify-between" : "right-6 top-12 z-30"}`}>
-        <button
-          type="button"
-          onClick={sortLayoutsByName}
-          className="flex items-center gap-2 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-white/72 transition-colors hover:bg-white/10 hover:text-white"
+      {iconPanel.visible ? (
+        <div
+          className={`absolute rounded-2xl border border-white/10 bg-slate-950/68 px-3 py-2 backdrop-blur-xl ${isCompact ? "left-3 right-3 top-[13.75rem] z-[6]" : "z-30 w-[264px]"}`}
+          style={isCompact ? undefined : { left: iconPanel.x, top: iconPanel.y }}
+          data-testid="icon-menu-panel"
         >
-          <Type className="h-3.5 w-3.5" />
-          A-Z
-        </button>
-        <button
-          type="button"
-          onClick={resetIcons}
-          className="flex items-center gap-2 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-white/72 transition-colors hover:bg-white/10 hover:text-white"
-        >
-          <RotateCcw className="h-3.5 w-3.5" />
-          Reset Icons
-        </button>
-      </div>
+          <div
+            className={`flex items-center justify-between gap-3 rounded-xl border border-white/8 bg-white/5 px-3 py-2 ${isCompact ? "" : "cursor-grab touch-none active:cursor-grabbing"}`}
+            onPointerDown={isCompact ? undefined : handleIconPanelMouseDown}
+          >
+            <div className="min-w-0">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-white/70">Icon Menu</p>
+              {!isCompact && <p className="text-[10px] text-white/40">Drag, sort, or reset desktop apps</p>}
+            </div>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setIconPanel((prev) => ({ ...prev, minimized: !prev.minimized }))}
+                className="rounded-lg border border-white/10 bg-white/5 p-2 text-white/65 transition-colors hover:bg-white/10 hover:text-white"
+                aria-label={iconPanel.minimized ? "Expand icon menu panel" : "Minimize icon menu panel"}
+                data-testid="icon-menu-minimize"
+              >
+                <Minimize2 className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setIconPanel((prev) => ({ ...prev, visible: false }))}
+                className="rounded-lg border border-white/10 bg-white/5 p-2 text-white/65 transition-colors hover:bg-white/10 hover:text-white"
+                aria-label="Close icon menu panel"
+                data-testid="icon-menu-close"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+          {!iconPanel.minimized && (
+            <div className={`mt-2 flex items-center gap-2 ${isCompact ? "justify-between" : "flex-wrap"}`}>
+              <button
+                type="button"
+                onClick={sortLayoutsByName}
+                className="flex items-center gap-2 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-white/72 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <Type className="h-3.5 w-3.5" />
+                A-Z
+              </button>
+              <button
+                type="button"
+                onClick={resetIcons}
+                className="flex items-center gap-2 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-white/72 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+                Reset Icons
+              </button>
+            </div>
+          )}
+        </div>
+      ) : null}
+
+      {(!workspacePanel.visible || !iconPanel.visible) && (
+        <div className={`absolute ${isCompact ? "left-3 right-3 top-[9.5rem] z-[7]" : "left-6 top-12 z-30"}`}>
+          <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-slate-950/68 px-3 py-2 backdrop-blur-xl">
+            {!workspacePanel.visible && (
+              <button
+                type="button"
+                onClick={() => setWorkspacePanel((prev) => ({ ...prev, visible: true, minimized: false }))}
+                className="flex items-center gap-2 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-white/72 transition-colors hover:bg-white/10 hover:text-white"
+                data-testid="workspace-restore"
+              >
+                <LayoutPanelTop className="h-3.5 w-3.5" />
+                Workspace
+              </button>
+            )}
+            {!iconPanel.visible && (
+              <button
+                type="button"
+                onClick={() => setIconPanel((prev) => ({ ...prev, visible: true, minimized: false }))}
+                className="flex items-center gap-2 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-white/72 transition-colors hover:bg-white/10 hover:text-white"
+                data-testid="icon-menu-restore"
+              >
+                <PanelsTopLeft className="h-3.5 w-3.5" />
+                Icon Menu
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {isCompact ? (
         <div className="absolute left-3 right-3 top-[18rem] bottom-24 grid auto-rows-max grid-cols-3 gap-2 overflow-y-auto rounded-3xl border border-white/8 bg-slate-950/34 p-3 backdrop-blur-xl sm:grid-cols-4">

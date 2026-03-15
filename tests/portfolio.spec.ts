@@ -136,6 +136,39 @@ test.describe("portfolio desktop shell", () => {
     await expect(dockerWindow.getByText("portfolio-web", { exact: true })).toBeVisible();
   });
 
+  test("manages workspace and icon panels", async ({ page, isMobile }) => {
+    test.skip(isMobile, "Floating desktop panels are desktop-only.");
+
+    await waitForDesktopReady(page);
+    await dismissGuideIfVisible(page);
+
+    const workspacePanel = page.getByTestId("workspace-panel");
+    const iconMenuPanel = page.getByTestId("icon-menu-panel");
+
+    await expect(workspacePanel).toBeVisible();
+    await expect(iconMenuPanel).toBeVisible();
+
+    await page.getByTestId("workspace-minimize").click();
+    await expect(workspacePanel.getByText("Habtamu Assegahegn")).toHaveCount(0);
+    await page.getByTestId("workspace-minimize").click();
+    await expect(workspacePanel.getByText("Habtamu Assegahegn")).toBeVisible();
+
+    await page.getByTestId("icon-menu-minimize").click();
+    await expect(iconMenuPanel.getByText("Reset Icons")).toHaveCount(0);
+    await page.getByTestId("icon-menu-minimize").click();
+    await expect(iconMenuPanel.getByText("Reset Icons")).toBeVisible();
+
+    await page.getByTestId("workspace-close").click();
+    await page.getByTestId("icon-menu-close").click();
+    await expect(workspacePanel).toHaveCount(0);
+    await expect(iconMenuPanel).toHaveCount(0);
+
+    await page.getByTestId("workspace-restore").click();
+    await page.getByTestId("icon-menu-restore").click();
+    await expect(workspacePanel).toBeVisible();
+    await expect(iconMenuPanel).toBeVisible();
+  });
+
   test("uses mobile-friendly shell layout", async ({ page, isMobile }, testInfo) => {
     test.skip(!isMobile, "Mobile layout assertion only.");
 
