@@ -1,0 +1,28 @@
+# IDE / editor / agent tooling
+.agent
+.codex
+.cursor
+.kluster
+.vscode
+.specfy
+.windsurf
+
+# Playwright
+playwright.json
+playwright.config.*.json
+test-results/
+playwright-report/
+blob-report/
+*.zip
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs and temp
+*.log
+*.tmp
+.cache
+
+# Dependencies (if you add Node later)
+node_modules/

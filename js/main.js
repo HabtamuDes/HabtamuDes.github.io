@@ -14,19 +14,98 @@
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Close mobile nav if open
+        var nav = document.querySelector('.nav');
+        if (nav && nav.classList.contains('is-open')) {
+          nav.classList.remove('is-open');
+        }
       }
     });
   });
 
-  // Project cards: open modal
+  // Store last focused element to return focus when modal closes
+  var lastFocusedElement = null;
+
+  // Get all focusable elements within a container
+  function getFocusableElements(container) {
+    return container.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+  }
+
+  // Trap focus within modal
+  function trapFocus(modal) {
+    var focusableElements = getFocusableElements(modal);
+    var firstFocusable = focusableElements[0];
+    var lastFocusable = focusableElements[focusableElements.length - 1];
+
+    modal.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
+        }
+      } else {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
+      }
+    });
+  }
+
+  // Open modal function
+  function openModal(modal, triggerElement) {
+    lastFocusedElement = triggerElement || document.activeElement;
+    modal.removeAttribute('hidden');
+    modal.setAttribute('data-open', 'true');
+    document.body.style.overflow = 'hidden';
+    
+    // Focus the close button or first focusable element
+    var closeBtn = modal.querySelector('.modal-close');
+    if (closeBtn) {
+      setTimeout(function () { closeBtn.focus(); }, 10);
+    }
+    
+    trapFocus(modal);
+  }
+
+  // Close modal function
+  function closeModal(modal) {
+    modal.setAttribute('data-open', 'false');
+    modal.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+    
+    // Return focus to the element that opened the modal
+    if (lastFocusedElement) {
+      lastFocusedElement.focus();
+      lastFocusedElement = null;
+    }
+  }
+
+  // Project cards: open modal on click or keyboard (Enter/Space)
   document.querySelectorAll('.project-card[data-modal]').forEach(function (card) {
-    card.addEventListener('click', function () {
+    // Make card keyboard accessible
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-pressed', 'false');
+
+    function activate() {
       var id = card.getAttribute('data-modal');
       var modal = document.getElementById(id);
       if (modal) {
-        modal.removeAttribute('hidden');
-        modal.setAttribute('data-open', 'true');
-        document.body.style.overflow = 'hidden';
+        openModal(modal, card);
+      }
+    }
+
+    card.addEventListener('click', activate);
+    
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate();
       }
     });
   });
@@ -36,9 +115,7 @@
     el.addEventListener('click', function () {
       var modal = el.closest('.modal');
       if (modal) {
-        modal.setAttribute('data-open', 'false');
-        modal.setAttribute('hidden', '');
-        document.body.style.overflow = '';
+        closeModal(modal);
       }
     });
   });
@@ -48,9 +125,7 @@
     if (e.key !== 'Escape') return;
     var open = document.querySelector('.modal[data-open="true"]');
     if (open) {
-      open.setAttribute('data-open', 'false');
-      open.setAttribute('hidden', '');
-      document.body.style.overflow = '';
+      closeModal(open);
     }
   });
 
@@ -59,8 +134,8 @@
   var nav = document.querySelector('.nav');
   if (toggle && nav) {
     toggle.addEventListener('click', function () {
-      nav.classList.toggle('is-open');
-      nav.hidden = false;
+      var isOpen = nav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
   }
 })();

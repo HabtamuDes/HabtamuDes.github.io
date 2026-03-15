@@ -3,323 +3,518 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Habtamu Assegahegn — Full stack developer, electronics & embedded systems, AI enthusiast. Portfolio and projects.">
-  <title>Habtamu Assegahegn | Portfolio</title>
+  <meta name="description" content="Habtamu Assegahegn — Full stack developer, electronics & embedded systems, AI enthusiast. 3D Portfolio.">
+  <title>Habtamu Assegahegn | 3D Ubuntu Portfolio</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Ubuntu+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/main.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Ubuntu', sans-serif;
+      background: #0a0a0a;
+      overflow: hidden;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #canvas-container {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+    }
+
+    /* ---- Loading screen ---- */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #2c001e 0%, #5e2750 50%, #77216f 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+    #loading.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .loader {
+      width: 48px; height: 48px;
+      border: 3px solid rgba(255,255,255,.15);
+      border-top-color: #e95420;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      margin-top: 1.25rem;
+      font-size: .95rem;
+      color: rgba(255,255,255,.7);
+      letter-spacing: .02em;
+    }
+
+    /* ---- Ubuntu window overlays ---- */
+    .ubuntu-window {
+      position: fixed;
+      background: rgba(28,28,32,.96);
+      border-radius: 10px;
+      box-shadow: 0 12px 48px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08);
+      z-index: 100;
+      min-width: 420px;
+      max-width: 820px;
+      max-height: 82vh;
+      display: none;
+      flex-direction: column;
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+    }
+    .ubuntu-window.active {
+      display: flex;
+      animation: winOpen .25s cubic-bezier(.22,1,.36,1);
+    }
+    @keyframes winOpen {
+      from { opacity: 0; transform: scale(.92) translateY(16px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .window-header {
+      display: flex;
+      align-items: center;
+      padding: .6rem 1rem;
+      background: rgba(46,46,50,.85);
+      border-radius: 10px 10px 0 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      cursor: move;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .window-controls { display: flex; gap: 7px; margin-right: .85rem; }
+    .window-btn {
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      transition: filter .15s;
+    }
+    .window-btn.close    { background: #e95420; }
+    .window-btn.minimize { background: #f99b11; }
+    .window-btn.maximize { background: #73d216; }
+    .window-btn:hover { filter: brightness(1.25); }
+
+    .window-title {
+      font-size: .85rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.85);
+      flex: 1;
+      display: flex; align-items: center; gap: .45rem;
+    }
+    .window-title i { font-size: .75rem; opacity: .6; }
+
+    .window-content {
+      padding: 1.5rem;
+      overflow-y: auto;
+      max-height: calc(82vh - 46px);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,.12) transparent;
+    }
+
+    /* About */
+    .about-content { display: flex; gap: 1.75rem; align-items: flex-start; }
+    .about-photo {
+      width: 130px; height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #e95420;
+      flex-shrink: 0;
+    }
+    .about-text h2 { font-size: 1.35rem; margin-bottom: .35rem; color: #e95420; }
+    .about-text .role { color: #f99b11; margin-bottom: .85rem; font-size: .9rem; }
+    .about-text p { color: rgba(255,255,255,.75); line-height: 1.65; font-size: .9rem; }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+    .skill-category h3 { color: #e95420; margin-bottom: .6rem; font-size: .95rem; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; }
+    .skill-tags li {
+      background: rgba(233,84,32,.12);
+      border: 1px solid rgba(233,84,32,.3);
+      padding: .25rem .65rem;
+      border-radius: 16px;
+      font-size: .8rem;
+      color: rgba(255,255,255,.85);
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: .85rem;
+    }
+    .project-item {
+      background: rgba(255,255,255,.04);
+      border-radius: 8px;
+      padding: .85rem 1rem;
+      transition: all .2s;
+      border: 1px solid transparent;
+      overflow: hidden;
+    }
+    .project-item:hover {
+      background: rgba(233,84,32,.08);
+      border-color: rgba(233,84,32,.25);
+      transform: translateY(-1px);
+    }
+    .project-item h4 { color: #e95420; margin-bottom: .35rem; font-size: .9rem; }
+    .project-item p { font-size: .8rem; color: rgba(255,255,255,.65); line-height: 1.5; }
+    .project-thumb {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: .65rem;
+      opacity: .85;
+      transition: opacity .2s;
+    }
+    .project-item:hover .project-thumb { opacity: 1; }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: .85rem;
+    }
+    .contact-item {
+      display: flex; align-items: center; gap: .85rem;
+      padding: .85rem;
+      background: rgba(255,255,255,.04);
+      border-radius: 8px;
+    }
+    .contact-item i { font-size: 1.25rem; color: #e95420; width: 28px; text-align: center; }
+    .contact-item strong { font-size: .8rem; display: block; margin-bottom: .15rem; }
+    .contact-item a { color: rgba(255,255,255,.8); text-decoration: none; font-size: .85rem; }
+    .contact-item a:hover { color: #e95420; }
+    .contact-item p { font-size: .85rem; color: rgba(255,255,255,.65); }
+
+    /* Terminal */
+    .terminal-content {
+      font-family: 'Ubuntu Mono', monospace;
+      background: #0c0c0c;
+      border-radius: 6px;
+      padding: 1rem;
+      min-height: 260px;
+      font-size: .85rem;
+      line-height: 1.6;
+    }
+    .terminal-line { margin-bottom: .3rem; }
+    .terminal-prompt { color: #73d216; }
+    .terminal-command { color: #fff; }
+    .terminal-output { color: rgba(255,255,255,.6); padding-left: .85rem; }
+    .terminal-cursor {
+      display: inline-block;
+      width: 8px; height: 15px;
+      background: #73d216;
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Onboarding guide */
+    #guide {
+      position: fixed;
+      top: 22%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      text-align: center;
+      pointer-events: none;
+      animation: guideIn 0.6s ease 2.2s both;
+    }
+    #guide.hidden { opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s; }
+    #guide p {
+      background: rgba(233,84,32,.92);
+      color: #fff;
+      padding: .6rem 1.4rem;
+      border-radius: 10px;
+      font-size: .95rem;
+      box-shadow: 0 4px 20px rgba(233,84,32,.35);
+    }
+    #guide .guide-sub {
+      display: block;
+      margin-top: .35rem;
+      font-size: .72rem;
+      color: rgba(255,255,255,.5);
+    }
+    #guide .guide-arrow {
+      font-size: 1.4rem;
+      color: #e95420;
+      margin-bottom: .3rem;
+      animation: bounce 1.2s ease infinite;
+    }
+    @keyframes guideIn { from { opacity: 0; transform: translateX(-50%) translateY(12px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+    /* Instructions bar */
+    #instructions {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10,10,12,.8);
+      padding: .55rem 1.25rem;
+      border-radius: 24px;
+      font-size: .8rem;
+      color: rgba(255,255,255,.65);
+      z-index: 50;
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.06);
+      white-space: nowrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .ubuntu-window { min-width: 92%; max-width: 96%; left: 2% !important; top: 8% !important; }
+      .about-content { flex-direction: column; align-items: center; text-align: center; }
+      #instructions { font-size: .7rem; padding: .45rem .85rem; }
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="#" class="logo">HA</a>
-      <nav class="nav" aria-label="Main">
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <button class="nav-toggle" aria-label="Toggle menu" hidden><i class="fa-solid fa-bars"></i></button>
-    </div>
-  </header>
+  <div id="file-protocol-warning" style="display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 2000; background: #e95420; color: #fff; padding: 10px 16px; font-size: 14px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.3);">
+    <strong>Open via a local server</strong> so images and the site work correctly. In this folder run: <code style="background: rgba(0,0,0,.2); padding: 4px 8px; border-radius: 4px;">npx serve</code> then visit the URL shown (e.g. http://localhost:3000).
+  </div>
+  <div id="loading">
+    <div class="loader"></div>
+    <p class="loading-text">Starting Ubuntu Desktop...</p>
+  </div>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-inner">
-        <p class="hero-greeting">Hello, I'm</p>
-        <h1 class="hero-name">Habtamu Assegahegn</h1>
-        <p class="hero-tagline">Full Stack Developer · Embedded Systems · AI Enthusiast</p>
-        <p class="hero-bio">I build software and hardware solutions. I love to create, innovate, and solve problems that make life easier.</p>
-        <div class="hero-cta">
-          <a href="#projects" class="btn btn-primary">View projects</a>
-          <a href="#contact" class="btn btn-outline">Get in touch</a>
+  <div id="canvas-container"></div>
+
+  <!-- About Window -->
+  <div class="ubuntu-window" id="about-window">
+    <div class="window-header">
+      <div class="window-controls">
+        <button class="window-btn close" onclick="closeWindow('about-window')"></button>
+        <button class="window-btn minimize"></button>
+        <button class="window-btn maximize"></button>
+      </div>
+      <span class="window-title"><i class="fa-solid fa-user"></i> About Me</span>
+    </div>
+    <div class="window-content">
+      <div class="about-content">
+        <img src="./images/mypicture.jpg" alt="Habtamu Assegahegn" class="about-photo"
+             onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e95420%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22>HA</text></svg>'">
+        <div class="about-text">
+          <h2>Habtamu Assegahegn</h2>
+          <p class="role">Full Stack Developer &middot; Embedded Systems &middot; AI Enthusiast</p>
+          <p>I'm an energetic professional who strives for technology growth. I love to create, innovate, and find solutions to problems that make tasks easier for people. I'm open and ready to learn and keep myself updated.</p>
+          <p style="margin-top:.85rem"><strong>Location:</strong> Addis Ababa, Ethiopia</p>
         </div>
       </div>
-      <div class="hero-bg" aria-hidden="true"></div>
-    </section>
+    </div>
+  </div>
 
-    <section id="about" class="section about">
-      <div class="container">
-        <h2 class="section-title">About me</h2>
-        <div class="about-grid">
-          <div class="about-photo">
-            <img src="./images/my.jpg" alt="Habtamu Assegahegn">
-          </div>
-          <div class="about-content">
-            <h3>Habtamu Assegahegn</h3>
-            <p class="about-role">Developer · Embedded System Designer</p>
-            <p>I'm an energetic professional who strives for technology growth. I love to create, innovate, and find solutions to problems that make tasks easier for people. I'm open and ready to learn and keep myself updated.</p>
-            <div class="about-links">
-              <a href="#skills">View my skills</a>
-              <a href="#projects">View my projects</a>
-              <a href="#contact">Hire me for your next project</a>
-            </div>
-          </div>
+  <!-- Skills Window -->
+  <div class="ubuntu-window" id="skills-window">
+    <div class="window-header">
+      <div class="window-controls">
+        <button class="window-btn close" onclick="closeWindow('skills-window')"></button>
+        <button class="window-btn minimize"></button>
+        <button class="window-btn maximize"></button>
+      </div>
+      <span class="window-title"><i class="fa-solid fa-code"></i> Skills</span>
+    </div>
+    <div class="window-content">
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3>Programming &amp; Tools</h3>
+          <ul class="skill-tags">
+            <li>Node.js</li><li>React</li><li>Next.js</li><li>Spring Boot</li><li>C#</li><li>ASP.NET</li><li>Python</li><li>Java</li><li>PHP</li><li>Dart</li><li>C++</li><li>C</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Databases &amp; Infrastructure</h3>
+          <ul class="skill-tags">
+            <li>PostgreSQL</li><li>SQL Server</li><li>Redis</li><li>Docker</li><li>Oracle</li><li>MySQL</li><li>MongoDB</li><li>Linux</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Specializations</h3>
+          <ul class="skill-tags">
+            <li>Embedded Systems</li><li>Machine Learning</li><li>Android Development</li><li>Data Visualization</li><li>Image Processing</li>
+          </ul>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <section id="skills" class="section skills">
-      <div class="container">
-        <h2 class="section-title">Skills</h2>
-        <div class="skills-grid">
-          <div class="skills-block">
-            <h3>Programming & tools</h3>
-            <ul class="skill-tags">
-              <li>Node.js</li><li>React</li><li>Next.js</li><li>Spring Boot</li><li>C#</li><li>ASP.NET</li><li>Python</li><li>Java</li><li>PHP</li><li>Dart</li><li>HTML</li><li>CSS</li><li>SQL</li><li>C++</li><li>C</li><li>MySQL</li>
-            </ul>
-          </div>
-          <div class="skills-block">
-            <h3>Databases & infrastructure</h3>
-            <ul class="skill-tags">
-              <li>PostgreSQL</li><li>SQL Server</li><li>Redis</li><li>Docker</li><li>Oracle DBMS</li><li>SQLite</li><li>XAMPP</li><li>Database management</li><li>Web Development</li><li>Android Development</li><li>Embedded systems</li><li>Data visualization</li><li>Image processing</li><li>Machine learning</li><li>Linux</li>
-            </ul>
-          </div>
-          <div class="skills-block">
-            <h3>Hobbies</h3>
-            <ul class="skill-tags hobbies">
-              <li>Coding</li><li>Reading</li><li>Movies</li><li>Music</li><li>Hiking</li><li>DIY Electronics</li><li>Meditation</li>
-            </ul>
-          </div>
+  <!-- Projects Window -->
+  <div class="ubuntu-window" id="projects-window">
+    <div class="window-header">
+      <div class="window-controls">
+        <button class="window-btn close" onclick="closeWindow('projects-window')"></button>
+        <button class="window-btn minimize"></button>
+        <button class="window-btn maximize"></button>
+      </div>
+      <span class="window-title"><i class="fa-solid fa-folder-open"></i> Projects</span>
+    </div>
+    <div class="window-content">
+      <div class="projects-grid">
+        <div class="project-item">
+          <img src="./images/farm5.png" alt="Smart Farming Dashboard" class="project-thumb">
+          <h4><i class="fa-solid fa-seedling"></i> Smart Farming</h4>
+          <p>Real-time sensor data for farmers via dashboard &amp; SMS. Hardware + software solution.</p>
+          <p style="margin-top:.4rem;font-size:.72rem;color:#e95420">PHP, Vue.js, PostgreSQL, Arduino, NodeMCU</p>
+        </div>
+        <div class="project-item">
+          <img src="./images/feta.jpg" alt="FetaMovies" class="project-thumb">
+          <h4><i class="fa-solid fa-film"></i> FetaMovies</h4>
+          <p>Movie streaming site with HD content for registered users.</p>
+          <p style="margin-top:.4rem;font-size:.72rem;color:#e95420">PHP, HTML, CSS</p>
+        </div>
+        <div class="project-item">
+          <img src="./images/lms.jpg" alt="Learning Management System" class="project-thumb">
+          <h4><i class="fa-solid fa-graduation-cap"></i> Learning Management System</h4>
+          <p>Register students, add courses, and run tests online.</p>
+          <p style="margin-top:.4rem;font-size:.72rem;color:#e95420">Python, Django, AJAX</p>
+        </div>
+        <div class="project-item">
+          <img src="./images/pygame.png" alt="Python Car Game" class="project-thumb">
+          <h4><i class="fa-solid fa-gamepad"></i> Python Car Game</h4>
+          <p>Car game built with the Pygame library.</p>
+          <p style="margin-top:.4rem;font-size:.72rem;color:#e95420">Python, Pygame</p>
+        </div>
+        <div class="project-item">
+          <img src="./images/pay.png" alt="Payroll Management System" class="project-thumb">
+          <h4><i class="fa-solid fa-money-bill-wave"></i> Payroll System</h4>
+          <p>Management system for payroll and related business tasks.</p>
+          <p style="margin-top:.4rem;font-size:.72rem;color:#e95420">Java, JDBC, Oracle</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-hospital"></i> Hospital Management</h4>
+          <p>End-to-end hospital management: patients, appointments, records.</p>
+          <p style="margin-top:.4rem;font-size:.72rem;color:#e95420">React, Next.js, Spring Boot, PostgreSQL</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-clock"></i> Attendance System</h4>
+          <p>Track and manage attendance with reports and dashboards.</p>
+          <p style="margin-top:.4rem;font-size:.72rem;color:#e95420">React, Node.js, Spring Boot</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-users"></i> HR System</h4>
+          <p>Human resources management: employees, leave, performance.</p>
+          <p style="margin-top:.4rem;font-size:.72rem;color:#e95420">React, ASP.NET, SQL Server</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-building-columns"></i> Bank Onboarding</h4>
+          <p>Web app, mobile app, and USSD for bank customer onboarding.</p>
+          <p style="margin-top:.4rem;font-size:.72rem;color:#e95420">React, Next.js, USSD Gateway</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-truck-fast"></i> Logistics System</h4>
+          <p>Uber Freight-style logistics: booking, tracking, fleet management.</p>
+          <p style="margin-top:.4rem;font-size:.72rem;color:#e95420">React, Next.js, Node.js, Docker</p>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <section id="projects" class="section projects">
-      <div class="container">
-        <h2 class="section-title">Projects</h2>
-        <div class="project-grid">
-          <article class="project-card" data-modal="project_farm">
-            <div class="project-card-image"><img src="./images/farm5.png" alt="Smart Farming"></div>
-            <h3>Smart Farming</h3>
-            <p>Real-time sensor data for farmers via dashboard & SMS. Hardware + software.</p>
-          </article>
-          <article class="project-card" data-modal="project_feta">
-            <div class="project-card-image"><img src="./images/feta.jpg" alt="FetaMovies"></div>
-            <h3>FetaMovies</h3>
-            <p>Movie streaming site with HD content for registered users.</p>
-          </article>
-          <article class="project-card" data-modal="project_lms">
-            <div class="project-card-image"><img src="./images/lms.jpg" alt="LMS"></div>
-            <h3>Learning Management System</h3>
-            <p>Register students, add courses, and run tests online.</p>
-          </article>
-          <article class="project-card" data-modal="project_pygame">
-            <div class="project-card-image"><img src="./images/pygame.png" alt="Python Game"></div>
-            <h3>Simple Python Game</h3>
-            <p>Car game built with the Pygame library.</p>
-          </article>
-          <article class="project-card" data-modal="project_pay">
-            <div class="project-card-image"><img src="./images/pay.png" alt="Payroll System"></div>
-            <h3>Advanced Payroll System</h3>
-            <p>Management system for payroll and related tasks.</p>
-          </article>
-          <article class="project-card" data-modal="project_hospital">
-            <div class="project-card-image project-card-placeholder" data-icon="hospital">
-              <i class="fa-solid fa-hospital" aria-hidden="true"></i>
-            </div>
-            <h3>Hospital Management System</h3>
-            <p>End-to-end hospital management: patients, appointments, records, and operations.</p>
-          </article>
-          <article class="project-card" data-modal="project_attendance">
-            <div class="project-card-image project-card-placeholder" data-icon="clock">
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-            </div>
-            <h3>Attendance System</h3>
-            <p>Track and manage employee or student attendance with reports and dashboards.</p>
-          </article>
-          <article class="project-card" data-modal="project_hr">
-            <div class="project-card-image project-card-placeholder" data-icon="users">
-              <i class="fa-solid fa-users" aria-hidden="true"></i>
-            </div>
-            <h3>HR System</h3>
-            <p>Human resources management: employees, leave, performance, and payroll integration.</p>
-          </article>
-          <article class="project-card" data-modal="project_bank">
-            <div class="project-card-image project-card-placeholder" data-icon="bank">
-              <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
-            </div>
-            <h3>Bank Customer Onboarding</h3>
-            <p>Web app, mobile app, and USSD for bank customer onboarding and account setup.</p>
-          </article>
-          <article class="project-card" data-modal="project_logistics">
-            <div class="project-card-image project-card-placeholder" data-icon="truck">
-              <i class="fa-solid fa-truck-fast" aria-hidden="true"></i>
-            </div>
-            <h3>Logistics Management System</h3>
-            <p>Uber Freight–style logistics: freight booking, tracking, and fleet management. Web + mobile.</p>
-          </article>
+  <!-- Contact Window -->
+  <div class="ubuntu-window" id="contact-window">
+    <div class="window-header">
+      <div class="window-controls">
+        <button class="window-btn close" onclick="closeWindow('contact-window')"></button>
+        <button class="window-btn minimize"></button>
+        <button class="window-btn maximize"></button>
+      </div>
+      <span class="window-title"><i class="fa-solid fa-envelope"></i> Contact</span>
+    </div>
+    <div class="window-content">
+      <div class="contact-grid">
+        <div class="contact-item">
+          <i class="fa-solid fa-envelope"></i>
+          <div><strong>Email</strong><p><a href="mailto:habtamuassegahegn7@gmail.com">habtamuassegahegn7@gmail.com</a></p></div>
+        </div>
+        <div class="contact-item">
+          <i class="fa-brands fa-linkedin"></i>
+          <div><strong>LinkedIn</strong><p><a href="https://www.linkedin.com/in/habtamu-assegahegn-15a554177/" target="_blank" rel="noopener">Habtamu Assegahegn</a></p></div>
+        </div>
+        <div class="contact-item">
+          <i class="fa-brands fa-github"></i>
+          <div><strong>GitHub</strong><p><a href="https://github.com/habtamuDes" target="_blank" rel="noopener">habtamuDes</a></p></div>
+        </div>
+        <div class="contact-item">
+          <i class="fa-brands fa-facebook"></i>
+          <div><strong>Facebook</strong><p><a href="https://www.facebook.com/habtamuassegahegn" target="_blank" rel="noopener">Habtamu Assegahegn</a></p></div>
+        </div>
+        <div class="contact-item">
+          <i class="fa-brands fa-x-twitter"></i>
+          <div><strong>X (Twitter)</strong><p><a href="https://twitter.com/habtamuassegah1" target="_blank" rel="noopener">@habtamuassegah1</a></p></div>
+        </div>
+        <div class="contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <div><strong>Location</strong><p>Addis Ababa, Ethiopia</p></div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <section id="contact" class="section contact">
-      <div class="container">
-        <h2 class="section-title">Contact</h2>
-        <div class="contact-grid">
-          <div class="contact-card">
-            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-            <h4>Location</h4>
-            <p>Addis Ababa, Ethiopia</p>
-          </div>
-          <div class="contact-card">
-            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-            <h4>Email</h4>
-            <p><a href="mailto:habtamuassegahegn7@gmail.com">habtamuassegahegn7@gmail.com</a></p>
-            <p><a href="mailto:habtamu.asegahegn@du.edu.et">habtamu.asegahegn@du.edu.et</a></p>
-          </div>
-          <div class="contact-card">
-            <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
-            <h4>LinkedIn</h4>
-            <p><a href="https://www.linkedin.com/in/habtamu-assegahegn-15a554177/" target="_blank" rel="noopener">Habtamu Assegahegn</a></p>
-          </div>
-          <div class="contact-card">
-            <i class="fa-brands fa-github" aria-hidden="true"></i>
-            <h4>GitHub</h4>
-            <p><a href="https://github.com/habtamuDes" target="_blank" rel="noopener">habtamuDes</a></p>
-          </div>
-          <div class="contact-card">
-            <i class="fa-brands fa-facebook" aria-hidden="true"></i>
-            <h4>Facebook</h4>
-            <p><a href="https://www.facebook.com/habtamuassegahegn" target="_blank" rel="noopener">Habtamu Assegahegn</a></p>
-          </div>
-          <div class="contact-card">
-            <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
-            <h4>X (Twitter)</h4>
-            <p><a href="https://twitter.com/habtamuassegah1" target="_blank" rel="noopener">@habtamuassegah1</a></p>
-          </div>
-        </div>
+  <!-- Terminal Window -->
+  <div class="ubuntu-window" id="terminal-window">
+    <div class="window-header">
+      <div class="window-controls">
+        <button class="window-btn close" onclick="closeWindow('terminal-window')"></button>
+        <button class="window-btn minimize"></button>
+        <button class="window-btn maximize"></button>
       </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p>© <span id="year"></span> Habtamu Assegahegn. Built for GitHub Pages.</p>
+      <span class="window-title"><i class="fa-solid fa-terminal"></i> Terminal</span>
     </div>
-  </footer>
-
-  <!-- Project modals -->
-  <div id="project_farm" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_farm_title" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box">
-      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
-      <h2 id="modal_farm_title" class="modal-title">Smart Farming</h2>
-      <img src="images/farm5.jpg" alt="" class="modal-img">
-      <p class="modal-desc">Smart farming helps farmers and growers with real-time sensor data through a dashboard and SMS. It includes both hardware and software.</p>
-      <p><strong>Tech:</strong> PHP, Vue.js, PostgreSQL, REST API, PWA, C, C++</p>
-      <p><strong>Hardware:</strong> Arduino, NodeMCU, DHT11, soil moisture, water pump, water level, LCD</p>
+    <div class="window-content">
+      <div class="terminal-content">
+        <div class="terminal-line"><span class="terminal-prompt">habtamu@ubuntu:~$</span><span class="terminal-command"> whoami</span></div>
+        <div class="terminal-line"><span class="terminal-output">Habtamu Assegahegn - Full Stack Developer</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">habtamu@ubuntu:~$</span><span class="terminal-command"> cat skills.txt</span></div>
+        <div class="terminal-line"><span class="terminal-output">Languages: JavaScript, Python, Java, C#, PHP, C++</span></div>
+        <div class="terminal-line"><span class="terminal-output">Frameworks: React, Next.js, Spring Boot, ASP.NET</span></div>
+        <div class="terminal-line"><span class="terminal-output">Databases: PostgreSQL, MySQL, Redis, MongoDB</span></div>
+        <div class="terminal-line"><span class="terminal-output">Tools: Docker, Git, Linux, Arduino</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">habtamu@ubuntu:~$</span><span class="terminal-command"> echo "Welcome to my portfolio!"</span></div>
+        <div class="terminal-line"><span class="terminal-output">Welcome to my portfolio!</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">habtamu@ubuntu:~$</span><span class="terminal-cursor"></span></div>
+      </div>
     </div>
   </div>
 
-  <div id="project_feta" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_feta_title" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box">
-      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
-      <h2 id="modal_feta_title" class="modal-title">FetaMovies</h2>
-      <img src="images/feta1.jpg" alt="" class="modal-img">
-      <p class="modal-desc">FetaMovies is a movie streaming site that provides HD movies for registered users.</p>
-      <p><strong>Tech:</strong> PHP, HTML, CSS</p>
-    </div>
+  <!-- Onboarding guide — auto-hides after first click -->
+  <div id="guide">
+    <div class="guide-arrow"><i class="fa-solid fa-arrow-up"></i></div>
+    <p><strong>Click the tiles on the monitor</strong> to explore my work</p>
+    <span class="guide-sub">About &middot; Skills &middot; Projects &middot; Contact &middot; Terminal</span>
   </div>
 
-  <div id="project_lms" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_lms_title" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box">
-      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
-      <h2 id="modal_lms_title" class="modal-title">Learning Management System</h2>
-      <img src="images/lms.jpg" alt="" class="modal-img">
-      <p class="modal-desc">LMS lets you register students, add courses, and give tests online.</p>
-      <p><strong>Tech:</strong> Python, HTML, CSS, AJAX, JavaScript, Django</p>
-    </div>
+  <div id="instructions">
+    <i class="fa-solid fa-mouse"></i> Drag to orbit &middot; Scroll to zoom &middot; Click monitor tiles to explore &middot; Tab for first-person
   </div>
 
-  <div id="project_pygame" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_pygame_title" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box">
-      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
-      <h2 id="modal_pygame_title" class="modal-title">Simple Python Game</h2>
-      <img src="images/pygame1.png" alt="" class="modal-img">
-      <p class="modal-desc">A simple car game made with the Python Pygame library.</p>
-      <p><strong>Tech:</strong> Python (Pygame)</p>
-    </div>
-  </div>
-
-  <div id="project_pay" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_pay_title" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box">
-      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
-      <h2 id="modal_pay_title" class="modal-title">Advanced Payroll Management System</h2>
-      <img src="images/pay.png" alt="" class="modal-img">
-      <p class="modal-desc">Management system for payroll and related business tasks.</p>
-      <p><strong>Tech:</strong> Java, JDBC, Oracle</p>
-    </div>
-  </div>
-
-  <div id="project_hospital" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_hospital_title" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box">
-      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
-      <h2 id="modal_hospital_title" class="modal-title">Hospital Management System</h2>
-      <div class="modal-placeholder"><i class="fa-solid fa-hospital" aria-hidden="true"></i></div>
-      <p class="modal-desc">End-to-end hospital management system covering patient registration, appointments, medical records, billing, and day-to-day operations.</p>
-      <p><strong>Platform:</strong> Web application</p>
-      <p><strong>Tech:</strong> React, Next.js, Node.js, Spring Boot, ASP.NET, PostgreSQL, SQL Server, Redis, Docker</p>
-    </div>
-  </div>
-
-  <div id="project_attendance" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_attendance_title" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box">
-      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
-      <h2 id="modal_attendance_title" class="modal-title">Attendance System</h2>
-      <div class="modal-placeholder"><i class="fa-solid fa-clock" aria-hidden="true"></i></div>
-      <p class="modal-desc">System to track and manage employee or student attendance with check-in/check-out, reports, and dashboards.</p>
-      <p><strong>Platform:</strong> Web application</p>
-      <p><strong>Tech:</strong> React, Node.js, Spring Boot, PostgreSQL, Redis, Docker</p>
-    </div>
-  </div>
-
-  <div id="project_hr" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_hr_title" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box">
-      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
-      <h2 id="modal_hr_title" class="modal-title">HR System</h2>
-      <div class="modal-placeholder"><i class="fa-solid fa-users" aria-hidden="true"></i></div>
-      <p class="modal-desc">Human resources management system for employee data, leave management, performance tracking, and payroll integration.</p>
-      <p><strong>Platform:</strong> Web application</p>
-      <p><strong>Tech:</strong> React, ASP.NET, PostgreSQL, SQL Server, Redis, Docker</p>
-    </div>
-  </div>
-
-  <div id="project_bank" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_bank_title" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box">
-      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
-      <h2 id="modal_bank_title" class="modal-title">Bank Customer Onboarding System</h2>
-      <div class="modal-placeholder"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></div>
-      <p class="modal-desc">Web app, mobile app, and USSD for bank customer onboarding: account opening, KYC, and digital onboarding. USSD enables access from feature phones (e.g. *123#).</p>
-      <p><strong>Platform:</strong> Web app + Mobile app + USSD</p>
-      <p><strong>Tech:</strong> React, Next.js, Node.js, Spring Boot, ASP.NET, PostgreSQL, SQL Server, Redis, Docker, USSD gateway</p>
-    </div>
-  </div>
-
-  <div id="project_logistics" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal_logistics_title" hidden>
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box">
-      <button class="modal-close" aria-label="Close" data-close><i class="fa-solid fa-times"></i></button>
-      <h2 id="modal_logistics_title" class="modal-title">Logistics Management System</h2>
-      <div class="modal-placeholder"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i></div>
-      <p class="modal-desc">Uber Freight–style logistics platform: freight booking, carrier matching, real-time tracking, and fleet management. Available on web and mobile.</p>
-      <p><strong>Platform:</strong> Web app + Mobile app</p>
-      <p><strong>Tech:</strong> React, Next.js, Node.js, Spring Boot, ASP.NET, PostgreSQL, SQL Server, Redis, Docker</p>
-    </div>
-  </div>
-
-  <script src="js/main.js"></script>
+  <script>
+    if (window.location.protocol === 'file:') {
+      document.getElementById('file-protocol-warning').style.display = 'block';
+      var placeholder = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%232c001e" width="100" height="100"/><text x="50" y="55" text-anchor="middle" fill="%23e95420" font-size="14" font-family="sans-serif">Image</text></svg>';
+      var about = document.querySelector('.about-photo');
+      if (about) about.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23e95420" width="100" height="100"/><text x="50" y="55" text-anchor="middle" fill="white" font-size="40" font-family="sans-serif">HA</text></svg>';
+      document.querySelectorAll('.project-thumb').forEach(function (img) { img.src = placeholder; });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/PointerLockControls.js"></script>
+  <script src="js/desktop.js"></script>
 </body>
 </html>

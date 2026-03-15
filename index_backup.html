@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Habtamu Assegahegn — Full stack developer, electronics & embedded systems, AI enthusiast. 3D Portfolio.">
+  <title>Habtamu Assegahegn | 3D Ubuntu Portfolio</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Ubuntu+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Ubuntu', sans-serif;
+      background: #1a1a1a;
+      overflow: hidden;
+      color: #fff;
+    }
+    
+    #canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    
+    /* Loading screen */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #2c001e 0%, #5e2750 50%, #77216f 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    
+    #loading.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top-color: #e95420;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.8);
+    }
+    
+    /* Ubuntu window overlay */
+    .ubuntu-window {
+      position: fixed;
+      background: rgba(30, 30, 30, 0.95);
+      border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+      z-index: 100;
+      min-width: 400px;
+      max-width: 800px;
+      max-height: 80vh;
+      display: none;
+      flex-direction: column;
+      backdrop-filter: blur(10px);
+    }
+    
+    .ubuntu-window.active {
+      display: flex;
+      animation: windowOpen 0.3s ease-out;
+    }
+    
+    @keyframes windowOpen {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    
+    .window-header {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: rgba(50, 50, 50, 0.8);
+      border-radius: 8px 8px 0 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      cursor: move;
+    }
+    
+    .window-controls {
+      display: flex;
+      gap: 8px;
+      margin-right: 1rem;
+    }
+    
+    .window-btn {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .window-btn.close { background: #e95420; }
+    .window-btn.minimize { background: #f99b11; }
+    .window-btn.maximize { background: #73d216; }
+    
+    .window-btn:hover { filter: brightness(1.2); }
+    
+    .window-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #fff;
+      flex: 1;
+    }
+    
+    .window-content {
+      padding: 1.5rem;
+      overflow-y: auto;
+      max-height: calc(80vh - 50px);
+    }
+    
+    /* About window */
+    .about-content {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+    
+    .about-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #e95420;
+    }
+    
+    .about-text h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #e95420;
+    }
+    
+    .about-text .role {
+      color: #f99b11;
+      margin-bottom: 1rem;
+    }
+    
+    .about-text p {
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+    }
+    
+    /* Skills window */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .skill-category h3 {
+      color: #e95420;
+      margin-bottom: 0.75rem;
+      font-size: 1rem;
+    }
+    
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      list-style: none;
+    }
+    
+    .skill-tags li {
+      background: rgba(233, 84, 32, 0.2);
+      border: 1px solid rgba(233, 84, 32, 0.4);
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #fff;
+    }
+    
+    /* Projects window */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    
+    .project-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    
+    .project-item:hover {
+      background: rgba(233, 84, 32, 0.1);
+      border-color: rgba(233, 84, 32, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .project-item h4 {
+      color: #e95420;
+      margin-bottom: 0.5rem;
+    }
+    
+    .project-item p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+    }
+    
+    /* Contact window */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+    }
+    
+    .contact-item i {
+      font-size: 1.5rem;
+      color: #e95420;
+      width: 30px;
+    }
+    
+    .contact-item a {
+      color: #fff;
+      text-decoration: none;
+    }
+    
+    .contact-item a:hover {
+      color: #e95420;
+    }
+    
+    /* Terminal window */
+    .terminal-content {
+      font-family: 'Ubuntu Mono', monospace;
+      background: #000;
+      border-radius: 4px;
+      padding: 1rem;
+      min-height: 300px;
+    }
+    
+    .terminal-line {
+      margin-bottom: 0.5rem;
+    }
+    
+    .terminal-prompt {
+      color: #73d216;
+    }
+    
+    .terminal-command {
+      color: #fff;
+    }
+    
+    .terminal-output {
+      color: rgba(255,255,255,0.7);
+      padding-left: 1rem;
+    }
+    
+    .terminal-cursor {
+      display: inline-block;
+      width: 10px;
+      height: 18px;
+      background: #73d216;
+      animation: blink 1s step-end infinite;
+    }
+    
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    
+    /* Instructions */
+    #instructions {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.8);
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .ubuntu-window {
+        min-width: 90%;
+        max-width: 95%;
+        left: 2.5% !important;
+        top: 10% !important;
+      }
+      
+      .about-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      
+      #instructions {
+        font-size: 0.75rem;
+        padding: 0.5rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<<<<<<< C:/Users/Coder7/Documents/Github/HabtamuDes.github.io/index.html
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#" class="logo">HA</a>
+      <nav class="nav" aria-label="Main">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </header>
+=======
+  <!-- Loading Screen -->
+  <div id="loading">
+    <div class="loader"></div>
+    <p class="loading-text">Starting Ubuntu Desktop...</p>
+  </div>
+>>>>>>> C:/Users/Coder7/.windsurf/worktrees/HabtamuDes.github.io/HabtamuDes.github.io-ab6e05a5/index.html
+
+  <!-- Three.js Canvas -->
+  <div id="canvas-container"></div>
+
+<<<<<<< C:/Users/Coder7/Documents/Github/HabtamuDes.github.io/index.html
+    <section id="about" class="section about">
+      <div class="container">
+        <h2 class="section-title">About me</h2>
+        <div class="about-grid">
+          <div class="about-photo">
+            <img src="./images/my.jpg" alt="Habtamu Assegahegn" loading="lazy">
+          </div>
+          <div class="about-content">
+            <h3>Habtamu Assegahegn</h3>
+            <p class="about-role">Developer · Embedded System Designer</p>
+            <p>I'm an energetic professional who strives for technology growth. I love to create, innovate, and find solutions to problems that make tasks easier for people. I'm open and ready to learn and keep myself updated.</p>
+            <div class="about-links">
+              <a href="#skills">View my skills</a>
+              <a href="#projects">View my projects</a>
+              <a href="#contact">Hire me for your next project</a>
+            </div>
+          </div>
+=======
+  <!-- About Window -->
+  <div class="ubuntu-window" id="about-window">
+    <div class="window-header">
+      <div class="window-controls">
+        <button class="window-btn close" onclick="closeWindow('about-window')"></button>
+        <button class="window-btn minimize"></button>
+        <button class="window-btn maximize"></button>
+      </div>
+      <span class="window-title"><i class="fa-solid fa-user"></i> About Me</span>
+    </div>
+    <div class="window-content">
+      <div class="about-content">
+        <img src="./images/my.jpg" alt="Habtamu Assegahegn" class="about-photo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e95420%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22>HA</text></svg>'">
+        <div class="about-text">
+          <h2>Habtamu Assegahegn</h2>
+          <p class="role">Full Stack Developer · Embedded Systems · AI Enthusiast</p>
+          <p>I'm an energetic professional who strives for technology growth. I love to create, innovate, and find solutions to problems that make tasks easier for people. I'm open and ready to learn and keep myself updated.</p>
+          <p style="margin-top: 1rem;"><strong>Location:</strong> Addis Ababa, Ethiopia</p>
+>>>>>>> C:/Users/Coder7/.windsurf/worktrees/HabtamuDes.github.io/HabtamuDes.github.io-ab6e05a5/index.html
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills Window -->
+  <div class="ubuntu-window" id="skills-window">
+    <div class="window-header">
+      <div class="window-controls">
+        <button class="window-btn close" onclick="closeWindow('skills-window')"></button>
+        <button class="window-btn minimize"></button>
+        <button class="window-btn maximize"></button>
+      </div>
+      <span class="window-title"><i class="fa-solid fa-code"></i> Skills</span>
+    </div>
+    <div class="window-content">
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3>Programming & Tools</h3>
+          <ul class="skill-tags">
+            <li>Node.js</li><li>React</li><li>Next.js</li><li>Spring Boot</li><li>C#</li><li>ASP.NET</li><li>Python</li><li>Java</li><li>PHP</li><li>Dart</li><li>C++</li><li>C</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Databases & Infrastructure</h3>
+          <ul class="skill-tags">
+            <li>PostgreSQL</li><li>SQL Server</li><li>Redis</li><li>Docker</li><li>Oracle</li><li>MySQL</li><li>MongoDB</li><li>Linux</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Specializations</h3>
+          <ul class="skill-tags">
+            <li>Embedded Systems</li><li>Machine Learning</li><li>Android Development</li><li>Data Visualization</li><li>Image Processing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<<<<<<< C:/Users/Coder7/Documents/Github/HabtamuDes.github.io/index.html
+    <section id="projects" class="section projects">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <div class="project-grid">
+          <article class="project-card" data-modal="project_farm">
+            <div class="project-card-image"><img src="./images/farm5.png" alt="Smart Farming" loading="lazy"></div>
+            <h3>Smart Farming</h3>
+            <p>Real-time sensor data for farmers via dashboard & SMS. Hardware + software.</p>
+          </article>
+          <article class="project-card" data-modal="project_feta">
+            <div class="project-card-image"><img src="./images/feta.jpg" alt="FetaMovies" loading="lazy"></div>
+            <h3>FetaMovies</h3>
+            <p>Movie streaming site with HD content for registered users.</p>
+          </article>
+          <article class="project-card" data-modal="project_lms">
+            <div class="project-card-image"><img src="./images/lms.jpg" alt="LMS" loading="lazy"></div>
+            <h3>Learning Management System</h3>
+            <p>Register students, add courses, and run tests online.</p>
+          </article>
+          <article class="project-card" data-modal="project_pygame">
+            <div class="project-card-image"><img src="./images/pygame.png" alt="Python Game" loading="lazy"></div>
+            <h3>Simple Python Game</h3>
+            <p>Car game built with the Pygame library.</p>
+          </article>
+          <article class="project-card" data-modal="project_pay">
+            <div class="project-card-image"><img src="./images/pay.png" alt="Payroll System" loading="lazy"></div>
+            <h3>Advanced Payroll System</h3>
+            <p>Management system for payroll and related tasks.</p>
+          </article>
+          <article class="project-card" data-modal="project_hospital">
+            <div class="project-card-image project-card-placeholder" data-icon="hospital">
+              <i class="fa-solid fa-hospital" aria-hidden="true"></i>
+            </div>
+            <h3>Hospital Management System</h3>
+            <p>End-to-end hospital management: patients, appointments, records, and operations.</p>
+          </article>
+          <article class="project-card" data-modal="project_attendance">
+            <div class="project-card-image project-card-placeholder" data-icon="clock">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+            </div>
+            <h3>Attendance System</h3>
+            <p>Track and manage employee or student attendance with reports and dashboards.</p>
+          </article>
+          <article class="project-card" data-modal="project_hr">
+            <div class="project-card-image project-card-placeholder" data-icon="users">
+              <i class="fa-solid fa-users" aria-hidden="true"></i>
+            </div>
+            <h3>HR System</h3>
+            <p>Human resources management: employees, leave, performance, and payroll integration.</p>
+          </article>
+          <article class="project-card" data-modal="project_bank">
+            <div class="project-card-image project-card-placeholder" data-icon="bank">
+              <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
+            </div>
+            <h3>Bank Customer Onboarding</h3>
+            <p>Web app, mobile app, and USSD for bank customer onboarding and account setup.</p>
+          </article>
+          <article class="project-card" data-modal="project_logistics">
+            <div class="project-card-image project-card-placeholder" data-icon="truck">
+              <i class="fa-solid fa-truck-fast" aria-hidden="true"></i>
+            </div>
+            <h3>Logistics Management System</h3>
+            <p>Uber Freight–style logistics: freight booking, tracking, and fleet management. Web + mobile.</p>
+          </article>
+=======
+  <!-- Projects Window -->
+  <div class="ubuntu-window" id="projects-window">
+    <div class="window-header">
+      <div class="window-controls">
+        <button class="window-btn close" onclick="closeWindow('projects-window')"></button>
+        <button class="window-btn minimize"></button>
+        <button class="window-btn maximize"></button>
+      </div>
+      <span class="window-title"><i class="fa-solid fa-folder-open"></i> Projects</span>
+    </div>
+    <div class="window-content">
+      <div class="projects-grid">
+        <div class="project-item">
+          <h4><i class="fa-solid fa-seedling"></i> Smart Farming</h4>
+          <p>Real-time sensor data for farmers via dashboard & SMS. Hardware + software solution.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #e95420;">PHP, Vue.js, PostgreSQL, Arduino, NodeMCU</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-film"></i> FetaMovies</h4>
+          <p>Movie streaming site with HD content for registered users.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #e95420;">PHP, HTML, CSS</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-graduation-cap"></i> Learning Management System</h4>
+          <p>Register students, add courses, and run tests online.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #e95420;">Python, Django, AJAX</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-gamepad"></i> Python Car Game</h4>
+          <p>Car game built with the Pygame library.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #e95420;">Python, Pygame</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-money-bill-wave"></i> Payroll System</h4>
+          <p>Management system for payroll and related business tasks.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #e95420;">Java, JDBC, Oracle</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-hospital"></i> Hospital Management</h4>
+          <p>End-to-end hospital management: patients, appointments, records.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #e95420;">React, Next.js, Spring Boot, PostgreSQL</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-clock"></i> Attendance System</h4>
+          <p>Track and manage attendance with reports and dashboards.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #e95420;">React, Node.js, Spring Boot</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-users"></i> HR System</h4>
+          <p>Human resources management: employees, leave, performance.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #e95420;">React, ASP.NET, SQL Server</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-building-columns"></i> Bank Onboarding</h4>
+          <p>Web app, mobile app, and USSD for bank customer onboarding.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #e95420;">React, Next.js, USSD Gateway</p>
+        </div>
+        <div class="project-item">
+          <h4><i class="fa-solid fa-truck-fast"></i> Logistics System</h4>
+          <p>Uber Freight–style logistics: booking, tracking, fleet management.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #e95420;">React, Next.js, Node.js, Docker</p>
+>>>>>>> C:/Users/Coder7/.windsurf/worktrees/HabtamuDes.github.io/HabtamuDes.github.io-ab6e05a5/index.html
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Window -->
+  <div class="ubuntu-window" id="contact-window">
+    <div class="window-header">
+      <div class="window-controls">
+        <button class="window-btn close" onclick="closeWindow('contact-window')"></button>
+        <button class="window-btn minimize"></button>
+        <button class="window-btn maximize"></button>
+      </div>
+      <span class="window-title"><i class="fa-solid fa-envelope"></i> Contact</span>
+    </div>
+    <div class="window-content">
+      <div class="contact-grid">
+        <div class="contact-item">
+          <i class="fa-solid fa-envelope"></i>
+          <div>
+            <strong>Email</strong>
+            <p><a href="mailto:habtamuassegahegn7@gmail.com">habtamuassegahegn7@gmail.com</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fa-brands fa-linkedin"></i>
+          <div>
+            <strong>LinkedIn</strong>
+            <p><a href="https://www.linkedin.com/in/habtamu-assegahegn-15a554177/" target="_blank">Habtamu Assegahegn</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fa-brands fa-github"></i>
+          <div>
+            <strong>GitHub</strong>
+            <p><a href="https://github.com/habtamuDes" target="_blank">habtamuDes</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fa-brands fa-facebook"></i>
+          <div>
+            <strong>Facebook</strong>
+            <p><a href="https://www.facebook.com/habtamuassegahegn" target="_blank">Habtamu Assegahegn</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fa-brands fa-x-twitter"></i>
+          <div>
+            <strong>X (Twitter)</strong>
+            <p><a href="https://twitter.com/habtamuassegah1" target="_blank">@habtamuassegah1</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <div>
+            <strong>Location</strong>
+            <p>Addis Ababa, Ethiopia</p>
+          </div>
+    </div>
+  </div>
+
+  <!-- Instructions -->
+  <div id="instructions">
+    <i class="fa-solid fa-mouse"></i> Orbit mode active · Drag to rotate · Scroll to zoom · Right-click to pan · Tab for first-person · Click icons to open
+  </div>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/PointerLockControls.js"></script>
+  <script src="js/desktop.js"></script>
+</body>
+</html>

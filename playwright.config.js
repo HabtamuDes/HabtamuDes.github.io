@@ -8,6 +8,7 @@ module.exports = defineConfig({
   fullyParallel: false,
   use: {
     baseURL: 'http://localhost:3333',
+    channel: 'chrome',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
