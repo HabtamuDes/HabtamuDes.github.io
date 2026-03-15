@@ -1,4 +1,4 @@
-import { MapPin, Briefcase, Heart, BrainCircuit } from "lucide-react";
+import { BrainCircuit, Briefcase, Heart, MapPin } from "lucide-react";
 
 const AboutWindow = () => {
   return (
@@ -17,14 +17,14 @@ const AboutWindow = () => {
         </div>
       </div>
 
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="text-sm leading-relaxed text-muted-foreground">
         I&apos;m an energetic professional who strives for technology growth. I love to create,
         innovate, and find solutions to problems that make tasks easier for people.
       </p>
 
-      <p className="text-sm text-muted-foreground leading-relaxed">
-        I&apos;m open and ready to learn, keep myself updated, and build software that bridges
-        modern web development, embedded systems, and practical AI solutions.
+      <p className="text-sm leading-relaxed text-muted-foreground">
+        I&apos;m open and ready to learn, keep myself updated, and build systems that bridge
+        modern web applications, embedded hardware, and practical AI solutions.
       </p>
 
       <div className="grid grid-cols-2 gap-3">
