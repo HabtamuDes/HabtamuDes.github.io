@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Ubuntu+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 270 20% 16%;
+    --foreground: 0 0% 95%;
+
+    --card: 270 15% 13%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 270 15% 13%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 18 85% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 12% 20%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 270 10% 22%;
+    --muted-foreground: 270 5% 60%;
+
+    --accent: 280 40% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 270 10% 25%;
+    --input: 270 10% 25%;
+    --ring: 18 85% 55%;
+    --radius: 0.75rem;
+
+    /* Ubuntu-specific tokens */
+    --topbar: 270 15% 8%;
+    --dock: 270 15% 10%;
+    --window-header: 270 15% 15%;
+    --window-body: 270 12% 12%;
+    --window-close: 0 70% 50%;
+    --window-minimize: 45 80% 55%;
+    --window-maximize: 120 50% 45%;
+
+    --sidebar-background: 270 15% 10%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 18 85% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 270 12% 20%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 270 10% 25%;
+    --sidebar-ring: 18 85% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    overflow: hidden;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(270 10% 30%); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(270 10% 40%); }
+
+/* Ubuntu glass panel */
+.ubuntu-panel {
+  background: hsl(var(--topbar) / 0.92);
+  backdrop-filter: blur(24px);
+}
+
+.ubuntu-dock {
+  background: hsl(var(--dock) / 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid hsl(270 10% 20% / 0.6);
+}
+
+.ubuntu-window {
+  background: hsl(var(--window-body));
+  border: 1px solid hsl(270 10% 22%);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px hsl(0 0% 0% / 0.5), 0 0 0 1px hsl(270 10% 20% / 0.3);
+}
+
+.ubuntu-window-header {
+  background: hsl(var(--window-header));
+  border-bottom: 1px solid hsl(270 10% 20%);
+}
+
+/* Dock icon hover */
+.dock-icon {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dock-icon:hover {
+  transform: scale(1.3) translateY(-8px);
+}
+.dock-icon.active {
+  transform: scale(1.1);
+}
+
+/* Animations from knowledge file */
+@keyframes fade-in {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-out {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+@keyframes scale-in {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes scale-out {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0.95); opacity: 0; }
+}
+@keyframes slide-in-right {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
+.animate-scale-in { animation: scale-in 0.2s ease-out; }
+.animate-enter { animation: fade-in 0.3s ease-out, scale-in 0.2s ease-out; }
+.animate-slide-in-right { animation: slide-in-right 0.3s ease-out; }
+
+.hover-scale {
+  @apply transition-transform duration-200 hover:scale-105;
+}
+
+/* Window open animation */
+@keyframes window-open {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-window-open {
+  animation: window-open 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Dock tooltip */
+.dock-tooltip {
+  @apply absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md text-xs font-display whitespace-nowrap opacity-0 pointer-events-none transition-opacity duration-200;
+  background: hsl(var(--topbar) / 0.95);
+}
+.dock-icon:hover .dock-tooltip {
+  opacity: 1;
+}
+
+/* Active dot indicator */
+.dock-dot {
+  @apply w-1 h-1 rounded-full absolute -bottom-2 left-1/2 -translate-x-1/2;
+  background: hsl(var(--primary));
+}
