@@ -26,7 +26,7 @@ const SkillsWindow = ({ language }: { language: Language }) => {
   const localizedCategories = skillCategories.map((cat, index) => ({ ...cat, ...copy.categories[index] }));
   return (
     <div className="space-y-4 animate-fade-in">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:gap-4">
         <div>
           <h2 className="text-lg font-display font-bold">{copy.title}</h2>
           <p className="text-sm text-muted-foreground">
@@ -55,9 +55,9 @@ const SkillsWindow = ({ language }: { language: Language }) => {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {localizedCategories.map((cat) => (
-          <div key={cat.title} className="rounded-xl border border-border bg-secondary/50 p-4">
+          <div key={cat.title} className="rounded-xl border border-border bg-secondary/50 p-3 md:p-4">
             <span
-              className={`mb-3 inline-block rounded-full bg-gradient-to-r px-2.5 py-0.5 text-[10px] font-display font-semibold ${cat.gradient}`}
+              className={`mb-3 inline-block rounded-full bg-gradient-to-r px-2.5 py-0.5 text-[10px] font-display font-semibold text-white ${cat.gradient}`}
             >
               {cat.title}
             </span>

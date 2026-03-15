@@ -99,7 +99,8 @@ const SectionLabel = ({ children }: { children: React.ReactNode }) => (
 );
 
 const MockVscode = () => (
-  <div className="grid min-h-[360px] grid-cols-[56px_220px_1fr] overflow-hidden rounded-2xl border border-border bg-[#111827]">
+  <div className="overflow-x-auto rounded-2xl border border-border bg-[#111827]">
+  <div className="grid min-h-[320px] min-w-[720px] grid-cols-[56px_220px_1fr] overflow-hidden bg-[#111827] md:min-w-0">
     <div className="flex flex-col items-center gap-4 border-r border-white/5 bg-[#0d1117] py-4 text-white/45">
       <span>EX</span>
       <span>FI</span>
@@ -150,10 +151,12 @@ const MockVscode = () => (
       </div>
     </div>
   </div>
+  </div>
 );
 
 const MockDatabase = ({ engine }: { engine: "pg" | "sql" }) => (
-  <div className="grid min-h-[360px] grid-cols-[280px_1fr] overflow-hidden rounded-2xl border border-border bg-slate-950/70">
+  <div className="overflow-x-auto rounded-2xl border border-border bg-slate-950/70">
+  <div className="grid min-h-[320px] min-w-[680px] grid-cols-[280px_1fr] overflow-hidden md:min-w-0">
     <div className="border-r border-border bg-secondary/40 p-4">
       <SectionLabel>{engine === "pg" ? "Browser" : "Object Explorer"}</SectionLabel>
       <div className="space-y-2 text-sm text-foreground/85">
@@ -195,6 +198,7 @@ const MockDatabase = ({ engine }: { engine: "pg" | "sql" }) => (
       </div>
     </div>
   </div>
+  </div>
 );
 
 const MockBrowser = () => (
@@ -209,7 +213,7 @@ const MockBrowser = () => (
         https://habtamudes.github.io
       </div>
     </div>
-    <div className="grid min-h-[360px] grid-cols-[220px_1fr]">
+    <div className="grid min-h-[320px] grid-cols-1 md:min-h-[360px] md:grid-cols-[220px_1fr]">
       <div className="border-r border-border bg-background/20 p-4">
         <SectionLabel>Open Tabs</SectionLabel>
         <div className="space-y-2 text-sm">
@@ -219,14 +223,14 @@ const MockBrowser = () => (
           <div className="rounded-lg bg-white/5 px-3 py-2 text-foreground/75">Playwright Report</div>
         </div>
       </div>
-      <div className="p-5">
+      <div className="p-4 md:p-5">
         <div className="rounded-2xl border border-border bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-6">
           <p className="text-[11px] uppercase tracking-[0.22em] text-sky-200/70">Live Preview</p>
           <h3 className="mt-3 text-2xl font-display font-bold">Habtamu Assegahegn</h3>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
             GitHub Pages check, responsive validation, and final browser-based review before deployment.
           </p>
-          <div className="mt-5 grid grid-cols-3 gap-3">
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
             {["Desktop Ready", "Interactive Apps", "Deployment Checked"].map((item) => (
               <div key={item} className="rounded-xl border border-white/8 bg-white/5 px-3 py-3 text-sm">
                 {item}
@@ -240,7 +244,7 @@ const MockBrowser = () => (
 );
 
 const MockPostman = () => (
-  <div className="grid min-h-[360px] grid-cols-[240px_1fr] overflow-hidden rounded-2xl border border-border bg-slate-950/75">
+  <div className="grid min-h-[320px] grid-cols-1 overflow-hidden rounded-2xl border border-border bg-slate-950/75 md:min-h-[360px] md:grid-cols-[240px_1fr]">
     <div className="border-r border-border bg-secondary/35 p-4">
       <SectionLabel>Collections</SectionLabel>
       <div className="space-y-2 text-sm">
@@ -259,7 +263,7 @@ const MockPostman = () => (
         </div>
         <button className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Send</button>
       </div>
-      <div className="grid flex-1 grid-cols-2 gap-4 p-4">
+      <div className="grid flex-1 grid-cols-1 gap-4 p-4 lg:grid-cols-2">
         <div className="rounded-xl border border-border bg-background/30 p-4">
           <SectionLabel>Request Body</SectionLabel>
           <pre className="whitespace-pre-wrap font-mono text-sm text-foreground/80">{`{\n  "name": "Habtamu",\n  "email": "habtamuassegahegn7@gmail.com",\n  "message": "Interested in collaboration"\n}`}</pre>
@@ -276,7 +280,7 @@ const MockPostman = () => (
 
 const MockDocker = () => (
   <div className="overflow-hidden rounded-2xl border border-border bg-slate-950/75">
-    <div className="grid min-h-[360px] grid-cols-[1fr_280px]">
+    <div className="grid min-h-[320px] grid-cols-1 md:min-h-[360px] md:grid-cols-[1fr_280px]">
       <div className="p-4">
         <SectionLabel>Containers</SectionLabel>
         <div className="space-y-3">
@@ -285,7 +289,7 @@ const MockDocker = () => (
             ["postgres-db", "Up 2h", "5432:5432", "healthy"],
             ["redis-cache", "Up 2h", "6379:6379", "healthy"],
           ].map((row) => (
-            <div key={row[0]} className="grid grid-cols-4 rounded-xl border border-border bg-background/30 px-4 py-3 text-sm">
+            <div key={row[0]} className="grid grid-cols-2 gap-y-1 rounded-xl border border-border bg-background/30 px-4 py-3 text-sm sm:grid-cols-4">
               <span>{row[0]}</span>
               <span className="text-muted-foreground">{row[1]}</span>
               <span className="text-muted-foreground">{row[2]}</span>
@@ -303,7 +307,7 @@ const MockDocker = () => (
 );
 
 const MockGit = () => (
-  <div className="grid min-h-[360px] grid-cols-[260px_1fr] overflow-hidden rounded-2xl border border-border bg-slate-950/75">
+  <div className="grid min-h-[320px] grid-cols-1 overflow-hidden rounded-2xl border border-border bg-slate-950/75 md:min-h-[360px] md:grid-cols-[260px_1fr]">
     <div className="border-r border-border bg-secondary/35 p-4">
       <SectionLabel>Branches</SectionLabel>
       <div className="space-y-2 text-sm">
@@ -366,7 +370,7 @@ const DevToolsWindow = ({ tool }: DevToolsWindowProps) => {
 
   return (
     <div className="space-y-4 animate-fade-in">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:gap-4">
         <div className="flex items-start gap-3">
           <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${config.accent}`}>
             <Icon className="h-6 w-6 text-white" />
@@ -381,7 +385,7 @@ const DevToolsWindow = ({ tool }: DevToolsWindowProps) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {config.panels.map((panel) => (
           <div key={panel.label} className="rounded-xl border border-border bg-secondary/40 p-4">
             <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{panel.label}</p>

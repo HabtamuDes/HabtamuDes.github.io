@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { ticTacToeContent } from "@/lib/localizedApps";
+import type { Language } from "@/lib/localization";
 
 type Player = "X" | "O";
 
@@ -15,7 +17,8 @@ const winningLines = [
 
 const TICTACTOE_STORAGE_KEY = "habtamu-portfolio:tictactoe";
 
-const TicTacToeWindow = () => {
+const TicTacToeWindow = ({ language }: { language: Language }) => {
+  const copy = ticTacToeContent[language];
   const [board, setBoard] = useState<(Player | null)[]>(() => {
     if (typeof window === "undefined") return Array(9).fill(null);
 
@@ -65,11 +68,11 @@ const TicTacToeWindow = () => {
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-display font-bold">Tic-Tac-Toe</h2>
-          <p className="text-sm text-muted-foreground">A simple desktop game to make the portfolio more interactive.</p>
+          <h2 className="text-lg font-display font-bold">{copy.title}</h2>
+          <p className="text-sm text-muted-foreground">{copy.subtitle}</p>
         </div>
         <div className="rounded-full border border-border bg-secondary/50 px-3 py-1 text-[11px] text-muted-foreground">
-          {winner ? `Winner: ${winner}` : isDraw ? "Draw" : `Turn: ${current}`}
+          {winner ? copy.winner(winner) : isDraw ? copy.draw : copy.turn(current)}
         </div>
       </div>
 
@@ -88,15 +91,13 @@ const TicTacToeWindow = () => {
         </div>
 
         <div className="space-y-3 rounded-2xl border border-border bg-secondary/35 p-4">
-          <p className="text-sm text-muted-foreground">
-            Play locally in the browser. This window is draggable, resizable, minimizable, and maximizable like the others.
-          </p>
+          <p className="text-sm text-muted-foreground">{copy.info}</p>
           <button
             type="button"
             onClick={reset}
             className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
           >
-            New Game
+            {copy.newGame}
           </button>
         </div>
       </div>

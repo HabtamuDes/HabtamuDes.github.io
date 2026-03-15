@@ -52,13 +52,13 @@ const TerminalWindow = ({ language }: { language: Language }) => {
 
   return (
     <div className="flex h-full flex-col font-mono text-sm" onClick={() => inputRef.current?.focus()}>
-      <div className="mb-3 rounded-lg border border-border bg-secondary/30 px-3 py-2 text-xs text-muted-foreground">
+      <div className="mb-3 rounded-lg border border-border bg-secondary/30 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
         {copy.intro}
       </div>
       <div className="flex-1 space-y-1 overflow-auto rounded-lg border border-border bg-black/30 p-3">
         {lines.map((line, i) => (
           <div key={i} className={line.type === "input" ? "text-emerald-400" : "text-muted-foreground"}>
-            <pre className="whitespace-pre-wrap">{line.text}</pre>
+            <pre className="whitespace-pre-wrap break-words text-[12px] leading-relaxed sm:text-sm">{line.text}</pre>
           </div>
         ))}
         <div ref={bottomRef} />
@@ -69,7 +69,7 @@ const TerminalWindow = ({ language }: { language: Language }) => {
           ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 bg-transparent text-foreground caret-primary outline-none"
+          className="min-w-0 flex-1 bg-transparent text-foreground caret-primary outline-none"
           autoFocus
         />
       </form>

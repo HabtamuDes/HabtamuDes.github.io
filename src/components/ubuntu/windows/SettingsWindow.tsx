@@ -44,8 +44,8 @@ const SettingsWindow = ({ preferences, onChange, language, onLanguageChange }: S
   );
 
   return (
-    <div className="space-y-5 animate-fade-in">
-      <div className="flex items-start justify-between gap-4">
+    <div className="space-y-4 md:space-y-5 animate-fade-in">
+      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:gap-4">
         <div>
           <h2 className="text-lg font-display font-bold">{copy.title}</h2>
           <p className="text-sm text-muted-foreground">{copy.subtitle}</p>
@@ -53,7 +53,7 @@ const SettingsWindow = ({ preferences, onChange, language, onLanguageChange }: S
         <div className="rounded-full border border-border bg-secondary/50 px-3 py-1 text-[11px] text-muted-foreground">{copy.savedLocally}</div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-secondary/35 p-4">
+      <div className="rounded-2xl border border-border bg-secondary/35 p-3 md:p-4">
         <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{copy.themePresets}</p>
         <div className="grid gap-3 md:grid-cols-3">
           {themeOptions.map((option) => {
@@ -82,7 +82,7 @@ const SettingsWindow = ({ preferences, onChange, language, onLanguageChange }: S
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-secondary/35 p-4">
+      <div className="rounded-2xl border border-border bg-secondary/35 p-3 md:p-4">
         <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{copy.wallpaper}</p>
         <div className="grid gap-3 md:grid-cols-3">
           {wallpaperOptions.map((option) => {
@@ -98,7 +98,7 @@ const SettingsWindow = ({ preferences, onChange, language, onLanguageChange }: S
                 }}
                 className={`overflow-hidden rounded-2xl border text-left transition-colors ${isActive ? "border-primary bg-primary/10" : "border-border bg-background/25 hover:bg-background/40"}`}
               >
-                <img src={`/${option}`} alt="" className="h-28 w-full object-cover" />
+                <img src={`/${option}`} alt="" className="h-20 w-full object-cover sm:h-28" />
                 <div className="p-4">
                   <p className="font-display text-sm font-semibold">{wallpaperName(option)}</p>
                   <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{wallpaperText(option)}</p>
@@ -109,7 +109,7 @@ const SettingsWindow = ({ preferences, onChange, language, onLanguageChange }: S
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-secondary/35 p-4">
+      <div className="rounded-2xl border border-border bg-secondary/35 p-3 md:p-4">
         <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{copy.language}</p>
         <p className="mb-3 text-sm text-muted-foreground">{copy.languageSubtitle}</p>
         <div className="grid gap-3 md:grid-cols-4">

@@ -53,9 +53,9 @@ const FilesWindow = ({ onOpenApp, language }: FilesWindowProps) => {
 
   return (
     <div className="grid h-full grid-cols-1 gap-4 lg:grid-cols-[220px_1fr]">
-      <aside className="rounded-2xl border border-border bg-secondary/35 p-4">
+      <aside className="rounded-2xl border border-border bg-secondary/35 p-3 md:p-4">
         <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{copy.folders}</p>
-        <div className="space-y-2">
+        <div className="flex gap-2 overflow-x-auto pb-1 lg:block lg:space-y-2 lg:overflow-visible">
           {sections.map((section) => (
             <button
               key={section.id}
@@ -65,7 +65,7 @@ const FilesWindow = ({ onOpenApp, language }: FilesWindowProps) => {
                 event.stopPropagation();
                 setActiveSectionId(section.id);
               }}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors ${activeSection.id === section.id ? "bg-primary/12 text-foreground" : "bg-background/20 text-muted-foreground hover:bg-background/35"}`}
+              className={`flex min-w-[190px] items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors lg:w-full lg:min-w-0 ${activeSection.id === section.id ? "bg-primary/12 text-foreground" : "bg-background/20 text-muted-foreground hover:bg-background/35"}`}
             >
               <Folder className="h-4 w-4 shrink-0" />
               <div>
@@ -77,8 +77,8 @@ const FilesWindow = ({ onOpenApp, language }: FilesWindowProps) => {
         </div>
       </aside>
 
-      <section className="rounded-2xl border border-border bg-secondary/35 p-5">
-        <div className="mb-4 flex items-start justify-between gap-4">
+      <section className="rounded-2xl border border-border bg-secondary/35 p-4 md:p-5">
+        <div className="mb-4 flex flex-col items-start justify-between gap-3 sm:flex-row sm:gap-4">
           <div>
             <h2 className="text-lg font-display font-bold">{copy.title}</h2>
             <p className="text-sm text-muted-foreground">{copy.subtitle}</p>

@@ -135,4 +135,42 @@ test.describe("portfolio desktop shell", () => {
     await expect(dockerWindow.getByRole("heading", { name: "Docker Desktop" })).toBeVisible();
     await expect(dockerWindow.getByText("portfolio-web", { exact: true })).toBeVisible();
   });
+
+  test("uses mobile-friendly shell layout", async ({ page, isMobile }, testInfo) => {
+    test.skip(!isMobile, "Mobile layout assertion only.");
+
+    await waitForDesktopReady(page);
+    await expect(page.getByRole("button", { name: "Apps" })).toBeVisible();
+    await expect(page.getByTestId("dock-icon-about")).toBeVisible();
+
+    await closeNotesIfVisible(page);
+    await openDesktopIcon(page, "files", true);
+
+    const filesWindow = page.getByTestId("window-files");
+    await expect(filesWindow).toBeVisible();
+    await expect(filesWindow).toHaveCSS("left", "0px");
+    await testInfo.attach("mobile-shell", {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
+  });
+
+  test("shows project details cleanly on mobile", async ({ page, isMobile }, testInfo) => {
+    test.skip(!isMobile, "Mobile project layout assertion only.");
+
+    await waitForDesktopReady(page);
+    await dismissGuideIfVisible(page);
+    await closeNotesIfVisible(page);
+    await openDesktopIcon(page, "projects", true);
+
+    const projectsWindow = page.getByTestId("window-projects");
+    await expect(projectsWindow).toBeVisible();
+    await expect(projectsWindow.getByRole("heading", { name: "Projects" })).toBeVisible();
+    await expect(projectsWindow.getByRole("heading", { name: "Smart Farming" })).toBeVisible();
+    await expect(projectsWindow.getByText("Embedded | IoT Monitoring")).toBeVisible();
+    await testInfo.attach("mobile-projects", {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
+  });
 });

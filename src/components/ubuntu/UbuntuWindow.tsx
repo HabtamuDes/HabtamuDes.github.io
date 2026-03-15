@@ -144,22 +144,25 @@ const UbuntuWindow = ({
     window.addEventListener("mouseup", handleMouseUp);
   }, [clampPosition, id, isMaximized, onFocus, onResize, position, size]);
 
+  const topOffset = isCompact ? 48 : 32;
+  const bottomOffset = isCompact ? 82 : 72;
+
   const style = isMaximized
-    ? { top: 32, left: 0, width: "100vw", height: `calc(100vh - 32px - ${isCompact ? 24 : 72}px)`, zIndex }
+    ? { top: topOffset, left: 0, width: "100vw", height: `calc(100vh - ${topOffset}px - ${bottomOffset}px)`, zIndex }
     : isCompact
-      ? { top: 48, left: 8, width: "calc(100vw - 16px)", height: "calc(100vh - 136px)", zIndex }
+      ? { top: 56, left: 0, width: "100vw", height: "calc(100vh - 138px)", zIndex }
       : { top: position.y, left: position.x, width: size.w, height: size.h, zIndex };
 
   return (
     <div
       data-testid={`window-${id}`}
-      className={`ubuntu-window fixed flex flex-col animate-window-open ${isMaximized ? "!rounded-none" : ""}`}
+      className={`ubuntu-window fixed flex flex-col animate-window-open ${isMaximized || isCompact ? "!rounded-none border-x-0" : ""}`}
       style={style}
       onMouseDown={() => onFocus(id)}
     >
       {/* Header */}
       <div
-        className={`ubuntu-window-header flex items-center h-10 px-3 ${isCompact ? "rounded-t-xl" : "rounded-t-xl cursor-grab active:cursor-grabbing"} shrink-0`}
+        className={`ubuntu-window-header flex items-center px-3 ${isCompact ? "h-12 rounded-none" : "h-10 rounded-t-xl cursor-grab active:cursor-grabbing"} shrink-0`}
         onMouseDown={isCompact ? undefined : handleMouseDown}
         onDoubleClick={() => onToggleMaximize(id)}
       >
@@ -195,11 +198,11 @@ const UbuntuWindow = ({
         <span className="flex-1 text-center text-xs font-display font-medium text-muted-foreground">
           {title}
         </span>
-        <div className="w-16" /> {/* Spacer to center title */}
+        <div className={`${isCompact ? "w-8" : "w-16"}`} />
       </div>
 
       {/* Body */}
-      <div className="flex-1 overflow-auto p-5">
+      <div className={`flex-1 overflow-auto ${isCompact ? "p-3" : "p-5"}`}>
         {children}
       </div>
 

@@ -4,8 +4,8 @@ import { translations, type Language } from "@/lib/localization";
 const AboutWindow = ({ language }: { language: Language }) => {
   const copy = translations[language].about;
   return (
-    <div className="space-y-5 animate-fade-in">
-      <div className="flex items-center gap-4">
+    <div className="space-y-4 md:space-y-5 animate-fade-in">
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
         <img
           src="/mypicture.jpg"
           alt="Habtamu Assegahegn"
@@ -27,7 +27,7 @@ const AboutWindow = ({ language }: { language: Language }) => {
         {copy.paragraph2}
       </p>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="grid grid-cols-1 gap-2 sm:flex sm:flex-wrap sm:gap-3">
         <a
           href="/Habtamu-Assegahegn-CV.txt"
           download
@@ -79,7 +79,7 @@ const AboutWindow = ({ language }: { language: Language }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {[
           { icon: MapPin, label: copy.location, value: "Addis Ababa, Ethiopia" },
           { icon: Briefcase, label: copy.roleLabel, value: copy.roleValue },

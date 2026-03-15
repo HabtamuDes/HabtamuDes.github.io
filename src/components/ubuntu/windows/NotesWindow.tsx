@@ -1,17 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { Check, Trash2 } from "lucide-react";
+import { notesContent } from "@/lib/localizedApps";
+import type { Language } from "@/lib/localization";
 
 type TodoItem = {
   id: number;
   text: string;
   done: boolean;
 };
-
-const initialTodos: TodoItem[] = [
-  { id: 1, text: "Review featured projects", done: true },
-  { id: 2, text: "Open the contact window", done: false },
-  { id: 3, text: "Try one of the desktop games", done: false },
-];
 
 const NOTES_STORAGE_KEY = "habtamu-portfolio:notes";
 
@@ -20,12 +16,19 @@ type NotesState = {
   todos: TodoItem[];
 };
 
-const NotesWindow = () => {
+const NotesWindow = ({ language }: { language: Language }) => {
+  const copy = notesContent[language];
+  const initialTodos: TodoItem[] = [
+    { id: 1, text: copy.initialTodos[0], done: true },
+    { id: 2, text: copy.initialTodos[1], done: false },
+    { id: 3, text: copy.initialTodos[2], done: false },
+  ];
+
   const initialState = () => {
     if (typeof window === "undefined") {
       return {
         todos: initialTodos,
-        notes: "Ideas:\n- Add real project screenshots\n- Attach resume download\n- Expand embedded systems showcase",
+        notes: copy.defaultNotes,
       };
     }
 
@@ -34,7 +37,7 @@ const NotesWindow = () => {
       if (!raw) {
         return {
           todos: initialTodos,
-          notes: "Ideas:\n- Add real project screenshots\n- Attach resume download\n- Expand embedded systems showcase",
+          notes: copy.defaultNotes,
         };
       }
 
@@ -43,12 +46,12 @@ const NotesWindow = () => {
         todos: Array.isArray(parsed?.todos) ? parsed.todos : initialTodos,
         notes: typeof parsed?.notes === "string"
           ? parsed.notes
-          : "Ideas:\n- Add real project screenshots\n- Attach resume download\n- Expand embedded systems showcase",
+          : copy.defaultNotes,
       };
     } catch {
       return {
         todos: initialTodos,
-        notes: "Ideas:\n- Add real project screenshots\n- Attach resume download\n- Expand embedded systems showcase",
+        notes: copy.defaultNotes,
       };
     }
   };
@@ -74,21 +77,21 @@ const NotesWindow = () => {
 
   return (
     <div className="grid h-full grid-cols-1 gap-4 lg:grid-cols-[280px_1fr]">
-      <div className="rounded-2xl border border-border bg-secondary/35 p-4">
+      <div className="rounded-2xl border border-border bg-secondary/35 p-3 md:p-4">
         <div className="mb-4">
-          <h2 className="text-lg font-display font-bold">Todo List</h2>
-          <p className="text-sm text-muted-foreground">{remaining} item(s) remaining</p>
+          <h2 className="text-lg font-display font-bold">{copy.todoTitle}</h2>
+          <p className="text-sm text-muted-foreground">{copy.remaining(remaining)}</p>
         </div>
 
         <form onSubmit={addTodo} className="mb-4 flex gap-2">
           <input
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder="Add a task"
+            placeholder={copy.placeholder}
             className="flex-1 rounded-lg border border-border bg-background/40 px-3 py-2 text-sm outline-none ring-0"
           />
-          <button type="submit" className="rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground">
-            Add
+          <button type="submit" className="shrink-0 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground">
+            {copy.add}
           </button>
         </form>
 
@@ -115,15 +118,15 @@ const NotesWindow = () => {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-secondary/35 p-4">
+      <div className="rounded-2xl border border-border bg-secondary/35 p-3 md:p-4">
         <div className="mb-3">
-          <h3 className="text-lg font-display font-bold">Quick Notes</h3>
-          <p className="text-sm text-muted-foreground">Editable scratchpad for ideas, reminders, and planning.</p>
+          <h3 className="text-lg font-display font-bold">{copy.quickNotes}</h3>
+          <p className="text-sm text-muted-foreground">{copy.quickNotesText}</p>
         </div>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="h-[calc(100%-3rem)] min-h-[280px] w-full resize-none rounded-xl border border-border bg-black/20 p-4 text-sm leading-relaxed outline-none"
+          className="h-[calc(100%-3rem)] min-h-[220px] w-full resize-none rounded-xl border border-border bg-black/20 p-3 text-sm leading-relaxed outline-none md:min-h-[280px] md:p-4"
         />
       </div>
     </div>

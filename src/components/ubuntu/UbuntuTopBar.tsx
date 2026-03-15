@@ -6,6 +6,7 @@ interface UbuntuTopBarProps {
   onResetWorkspace: () => void;
   onShowGuide: () => void;
   onOpenLauncher: () => void;
+  isCompact: boolean;
   language: Language;
   languageOptions: { value: Language; label: string }[];
   onLanguageChange: (value: Language) => void;
@@ -41,6 +42,7 @@ const UbuntuTopBar = ({
   onResetWorkspace,
   onShowGuide,
   onOpenLauncher,
+  isCompact,
   language = "en",
   languageOptions = [],
   onLanguageChange,
@@ -101,19 +103,22 @@ const UbuntuTopBar = ({
   };
 
   return (
-    <div ref={widgetsRef} className="ubuntu-panel fixed top-0 left-0 right-0 h-8 z-[100] flex items-center justify-between px-4 text-xs">
-      <div className="flex items-center gap-2 rounded px-3 py-1 font-display font-medium">
+    <div ref={widgetsRef} className={`ubuntu-panel fixed top-0 left-0 right-0 z-[100] text-xs ${isCompact ? "h-12 px-3" : "h-8 px-4"}`}>
+      <div className={`flex h-full items-center justify-between gap-3 ${isCompact ? "overflow-hidden" : ""}`}>
+      <div className={`flex items-center gap-2 rounded px-3 py-1 font-display font-medium ${isCompact ? "min-w-0 px-0" : ""}`}>
         <span className="h-2 w-2 rounded-full bg-primary" />
-        {safeLabels.workspace}
+        <span className={isCompact ? "truncate text-[11px]" : ""}>{safeLabels.workspace}</span>
       </div>
-      <div className="flex items-center gap-3">
+      <div className={`flex items-center ${isCompact ? "gap-2" : "gap-3"}`}>
+        {!isCompact && (
         <label className="sr-only" htmlFor="language-switcher">{safeLabels.language}</label>
+        )}
         <select
           id="language-switcher"
           data-testid="language-select"
           value={language}
           onChange={(event) => onLanguageChange(event.target.value as Language)}
-          className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] uppercase tracking-[0.12em] text-white/80 outline-none"
+          className={`rounded-md border border-white/10 bg-white/5 outline-none ${isCompact ? "w-[72px] px-1.5 py-1 text-[10px]" : "px-2 py-1 text-[10px] uppercase tracking-[0.12em] text-white/80"}`}
         >
           {languageOptions.map((option) => (
             <option key={option.value} value={option.value} className="bg-slate-900 text-white">
@@ -124,17 +129,18 @@ const UbuntuTopBar = ({
         <button
           type="button"
           onClick={onOpenLauncher}
-          className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+          className={`rounded-md border border-white/10 bg-white/5 transition-colors hover:bg-white/10 hover:text-white ${isCompact ? "px-2 py-1 text-[10px] text-white/75" : "px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-white/70"}`}
         >
-          {safeLabels.launcher}
+          {isCompact ? "Apps" : safeLabels.launcher}
         </button>
         <button
           type="button"
           onClick={onShowGuide}
-          className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+          className={`rounded-md border border-white/10 bg-white/5 transition-colors hover:bg-white/10 hover:text-white ${isCompact ? "px-2 py-1 text-[10px] text-white/75" : "px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-white/70"}`}
         >
           {safeLabels.guide}
         </button>
+        {!isCompact && (
         <button
           type="button"
           onClick={onResetWorkspace}
@@ -142,9 +148,13 @@ const UbuntuTopBar = ({
         >
           {safeLabels.reset}
         </button>
+        )}
+        {!isCompact && (
         <span className="rounded-md border border-white/10 bg-black/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-white/45">
           {safeLabels.shortcut}
         </span>
+        )}
+        {!isCompact && (
         <button
           type="button"
           onClick={() => {
@@ -155,6 +165,7 @@ const UbuntuTopBar = ({
         >
           Widgets
         </button>
+        )}
         <button
           type="button"
           data-testid="calendar-toggle"
@@ -162,14 +173,15 @@ const UbuntuTopBar = ({
             setIsCalendarOpen((value) => !value);
             setIsWidgetsOpen(false);
           }}
-          className="flex items-center gap-2 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+          className={`flex items-center rounded-md border border-white/10 bg-white/5 text-white/80 transition-colors hover:bg-white/10 hover:text-white ${isCompact ? "gap-1 px-2 py-1 text-[10px]" : "gap-2 px-2 py-1"}`}
         >
           <CalendarDays className="h-3.5 w-3.5" />
-          <span className="font-display font-medium">{formatDate(time)}</span>
+          <span className="font-display font-medium">{isCompact ? time.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", hour12: true }) : formatDate(time)}</span>
         </button>
-        <Wifi className="w-3.5 h-3.5 text-foreground" />
-        <Volume2 className="w-3.5 h-3.5 text-foreground" />
-        <Battery className="w-3.5 h-3.5 text-foreground" />
+        {!isCompact && <Wifi className="w-3.5 h-3.5 text-foreground" />}
+        {!isCompact && <Volume2 className="w-3.5 h-3.5 text-foreground" />}
+        {!isCompact && <Battery className="w-3.5 h-3.5 text-foreground" />}
+      </div>
       </div>
 
       {isWidgetsOpen && (

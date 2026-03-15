@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { snakeContent } from "@/lib/localizedApps";
+import type { Language } from "@/lib/localization";
 
 const GRID_SIZE = 14;
 const SNAKE_STORAGE_KEY = "habtamu-portfolio:snake";
@@ -28,7 +30,8 @@ const initialSnake = (): Cell[] => [
   { x: 3, y: 7 },
 ];
 
-const SnakeWindow = () => {
+const SnakeWindow = ({ language }: { language: Language }) => {
+  const copy = snakeContent[language];
   const [snake, setSnake] = useState<Cell[]>(initialSnake);
   const [food, setFood] = useState<Cell>({ x: 9, y: 5 });
   const [direction, setDirection] = useState<Direction>("right");
@@ -156,11 +159,11 @@ const SnakeWindow = () => {
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-display font-bold">Snake</h2>
-          <p className="text-sm text-muted-foreground">Use arrow keys to play. Space pauses or resumes.</p>
+          <h2 className="text-lg font-display font-bold">{copy.title}</h2>
+          <p className="text-sm text-muted-foreground">{copy.subtitle}</p>
         </div>
         <div className="rounded-full border border-border bg-secondary/50 px-3 py-1 text-[11px] text-muted-foreground">
-          Score: {score}
+          {copy.score}: {score}
         </div>
       </div>
 
@@ -184,33 +187,33 @@ const SnakeWindow = () => {
 
         <div className="space-y-3 rounded-2xl border border-border bg-secondary/35 p-4">
           <div className="rounded-xl border border-border bg-background/30 px-3 py-2 text-sm text-muted-foreground">
-            High Score: <span className="font-semibold text-foreground">{highScore}</span>
+            {copy.highScore}: <span className="font-semibold text-foreground">{highScore}</span>
           </div>
           <button
             type="button"
             onClick={() => setRunning((prev) => !prev)}
             className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
           >
-            {running ? "Pause" : "Start"}
+            {running ? copy.pause : copy.start}
           </button>
           <button
             type="button"
             onClick={restart}
             className="w-full rounded-lg border border-border bg-background/40 px-4 py-2 text-sm"
           >
-            Restart
+            {copy.restart}
           </button>
           <div className="grid grid-cols-3 gap-2 pt-2">
             <div />
-            <button type="button" onClick={() => setSafeDirection("up")} className="rounded-lg border border-border bg-background/40 px-3 py-2 text-sm">Up</button>
+            <button type="button" onClick={() => setSafeDirection("up")} className="rounded-lg border border-border bg-background/40 px-3 py-2 text-sm">{copy.up}</button>
             <div />
-            <button type="button" onClick={() => setSafeDirection("left")} className="rounded-lg border border-border bg-background/40 px-3 py-2 text-sm">Left</button>
-            <button type="button" onClick={() => setSafeDirection("down")} className="rounded-lg border border-border bg-background/40 px-3 py-2 text-sm">Down</button>
-            <button type="button" onClick={() => setSafeDirection("right")} className="rounded-lg border border-border bg-background/40 px-3 py-2 text-sm">Right</button>
+            <button type="button" onClick={() => setSafeDirection("left")} className="rounded-lg border border-border bg-background/40 px-3 py-2 text-sm">{copy.left}</button>
+            <button type="button" onClick={() => setSafeDirection("down")} className="rounded-lg border border-border bg-background/40 px-3 py-2 text-sm">{copy.down}</button>
+            <button type="button" onClick={() => setSafeDirection("right")} className="rounded-lg border border-border bg-background/40 px-3 py-2 text-sm">{copy.right}</button>
           </div>
           {gameOver && (
             <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
-              Game over. Restart to play again.
+              {copy.gameOver}
             </div>
           )}
         </div>

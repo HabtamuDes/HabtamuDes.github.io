@@ -30,7 +30,7 @@ const dockItems: { id: AppId; icon: React.FC<{ className?: string }>; label: str
 
 const UbuntuDock = ({ onOpenApp, activeApps, appLabels }: UbuntuDockProps) => {
   return (
-    <div className="fixed bottom-4 left-1/2 z-[90] flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-end gap-2 overflow-x-auto rounded-2xl px-3 py-2 ubuntu-dock">
+    <div className="fixed bottom-0 left-0 right-0 z-[90] flex items-end gap-2 overflow-x-auto px-3 py-2 ubuntu-dock md:bottom-4 md:left-1/2 md:right-auto md:max-w-[calc(100vw-1rem)] md:-translate-x-1/2 md:rounded-2xl">
       {dockItems.map((item) => {
         const isActive = activeApps.includes(item.id);
         return (
@@ -40,7 +40,7 @@ const UbuntuDock = ({ onOpenApp, activeApps, appLabels }: UbuntuDockProps) => {
             aria-label={`${appLabels[item.id] ?? item.label} dock icon`}
             data-testid={`dock-icon-${item.id}`}
             onClick={() => onOpenApp(item.id)}
-            className={`dock-icon relative w-12 h-12 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-lg ${isActive ? "active" : ""}`}
+            className={`dock-icon relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg md:h-12 md:w-12 ${item.gradient} ${isActive ? "active" : ""}`}
           >
             <span className="dock-tooltip">{appLabels[item.id] ?? item.label}</span>
             <item.icon className="w-6 h-6 text-foreground" />

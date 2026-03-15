@@ -13,7 +13,7 @@ const ContactWindow = ({ language }: { language: Language }) => {
   const copy = translations[language].contact;
   return (
     <div className="space-y-4 animate-fade-in">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:gap-4">
         <div>
           <h2 className="text-lg font-display font-bold">{copy.title}</h2>
           <p className="text-sm text-muted-foreground">
@@ -55,7 +55,7 @@ const ContactWindow = ({ language }: { language: Language }) => {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 p-3 transition-transform hover:scale-[1.01]"
+            className="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 p-3 transition-transform hover:scale-[1.01] break-all sm:break-normal"
           >
             <link.icon className="h-4 w-4 text-primary" />
             <span className="text-sm">{link.label}</span>

@@ -215,34 +215,42 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
     [iconLayouts],
   );
 
-  const handleCardMouseDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+  const handleCardMouseDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     dragRef.current = { startX: event.clientX, startY: event.clientY, x: cardPosition.x, y: cardPosition.y };
-    const handleMouseMove = (moveEvent: MouseEvent) => {
+    document.body.style.userSelect = "none";
+    const handleMouseMove = (moveEvent: PointerEvent) => {
       if (!dragRef.current) return;
       setCardPosition(clampPosition(dragRef.current.x + (moveEvent.clientX - dragRef.current.startX), dragRef.current.y + (moveEvent.clientY - dragRef.current.startY)));
     };
     const handleMouseUp = () => {
       dragRef.current = null;
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      document.body.style.userSelect = "";
+      window.removeEventListener("pointermove", handleMouseMove);
+      window.removeEventListener("pointerup", handleMouseUp);
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("pointermove", handleMouseMove);
+    window.addEventListener("pointerup", handleMouseUp);
   }, [cardPosition.x, cardPosition.y, clampPosition]);
 
-  const handleGuideMouseDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+  const handleGuideMouseDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     guideDragRef.current = { startX: event.clientX, startY: event.clientY, x: guidePosition.x, y: guidePosition.y };
-    const handleMouseMove = (moveEvent: MouseEvent) => {
+    document.body.style.userSelect = "none";
+    const handleMouseMove = (moveEvent: PointerEvent) => {
       if (!guideDragRef.current) return;
       setGuidePosition(clampPosition(guideDragRef.current.x + (moveEvent.clientX - guideDragRef.current.startX), guideDragRef.current.y + (moveEvent.clientY - guideDragRef.current.startY), 448, 520));
     };
     const handleMouseUp = () => {
       guideDragRef.current = null;
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      document.body.style.userSelect = "";
+      window.removeEventListener("pointermove", handleMouseMove);
+      window.removeEventListener("pointerup", handleMouseUp);
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("pointermove", handleMouseMove);
+    window.addEventListener("pointerup", handleMouseUp);
   }, [clampPosition, guidePosition.x, guidePosition.y]);
 
   const handleIconMouseDown = useCallback((id: AppId, event: React.MouseEvent<HTMLButtonElement>) => {
@@ -278,14 +286,14 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
 
   return (
     <>
-      <div className="absolute z-10 max-w-lg rounded-[28px] border border-white/10 bg-slate-950/35 p-6 shadow-2xl backdrop-blur-2xl" style={{ left: cardPosition.x, top: cardPosition.y }}>
-        <div className="mb-3 flex cursor-grab items-center justify-between rounded-2xl border border-white/8 bg-white/5 px-3 py-2 active:cursor-grabbing" onMouseDown={handleCardMouseDown}>
+      <div className={`absolute border border-white/10 bg-slate-950/35 shadow-2xl backdrop-blur-2xl ${isCompact ? "left-3 right-3 top-16 z-[5] rounded-[24px] p-4" : "z-30 max-w-lg rounded-[28px] p-6"}`} style={isCompact ? undefined : { left: cardPosition.x, top: cardPosition.y }}>
+        <div className={`mb-3 flex items-center justify-between rounded-2xl border border-white/8 bg-white/5 px-3 py-2 ${isCompact ? "" : "cursor-grab touch-none active:cursor-grabbing"}`} onPointerDown={isCompact ? undefined : handleCardMouseDown}>
           <p className="text-[11px] uppercase tracking-[0.28em] text-orange-200/75">{copy.engineerWorkspace}</p>
-          <span className="text-[10px] text-white/45">{copy.dragCard}</span>
+          {!isCompact && <span className="text-[10px] text-white/45">{copy.dragCard}</span>}
         </div>
-        <h1 className="text-3xl font-display font-bold text-white">Habtamu Assegahegn</h1>
+        <h1 className={`${isCompact ? "text-2xl" : "text-3xl"} font-display font-bold text-white`}>Habtamu Assegahegn</h1>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-white/78">{copy.summary}</p>
-        <div className="mt-5 grid grid-cols-3 gap-3 text-left">
+        <div className={`mt-5 grid text-left ${isCompact ? "grid-cols-1 gap-2" : "grid-cols-3 gap-3"}`}>
           <div className="rounded-2xl border border-white/8 bg-white/5 px-3 py-3">
             <p className="text-[10px] uppercase tracking-[0.2em] text-white/45">{copy.focus}</p>
             <p className="mt-1 text-sm font-display font-medium text-white">{copy.focusValue}</p>
@@ -302,7 +310,7 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
         <p className="mt-4 text-xs text-white/58">{copy.openHint}</p>
       </div>
 
-      <div className="absolute right-6 top-12 z-20 flex items-center gap-2 rounded-2xl border border-white/10 bg-slate-950/68 px-3 py-2 backdrop-blur-xl">
+      <div className={`absolute flex items-center gap-2 rounded-2xl border border-white/10 bg-slate-950/68 px-3 py-2 backdrop-blur-xl ${isCompact ? "left-3 right-3 top-[13.75rem] z-[6] justify-between" : "right-6 top-12 z-30"}`}>
         <button
           type="button"
           onClick={sortLayoutsByName}
@@ -322,7 +330,7 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
       </div>
 
       {isCompact ? (
-        <div className="absolute left-3 right-3 top-[calc(100%-15.5rem)] grid grid-cols-4 gap-2 rounded-3xl border border-white/8 bg-slate-950/34 p-3 backdrop-blur-xl">
+        <div className="absolute left-3 right-3 top-[18rem] bottom-24 grid auto-rows-max grid-cols-3 gap-2 overflow-y-auto rounded-3xl border border-white/8 bg-slate-950/34 p-3 backdrop-blur-xl sm:grid-cols-4">
           {orderedIcons.map((item) => (
             <button
               key={item.id}
@@ -330,7 +338,7 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
               aria-label={`${appLabels[item.id] ?? item.label} desktop icon`}
               data-testid={`desktop-icon-${item.id}`}
               onClick={() => onOpenApp(item.id)}
-              className="group flex w-full flex-col items-center gap-1.5 rounded-xl p-3 transition-colors hover:bg-foreground/10"
+              className="group flex w-full flex-col items-center gap-1.5 rounded-xl p-2.5 transition-colors hover:bg-foreground/10"
               style={{ order: iconLayoutMap[item.id]?.order ?? 0 }}
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/60 shadow-lg shadow-black/25">
@@ -341,7 +349,7 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
           ))}
         </div>
       ) : (
-        <div className="absolute inset-0 z-10">
+        <div className="pointer-events-none absolute inset-0 z-10">
           {orderedIcons.map((item) => {
             const layout = iconLayoutMap[item.id];
             if (!layout) return null;
@@ -354,7 +362,7 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
                 data-testid={`desktop-icon-${item.id}`}
                 onMouseDown={(event) => handleIconMouseDown(item.id, event)}
                 onDoubleClick={() => onOpenApp(item.id)}
-                className="group absolute flex w-[86px] cursor-grab flex-col items-center gap-1.5 rounded-xl p-3 transition-colors hover:bg-foreground/10 active:cursor-grabbing"
+                className="pointer-events-auto group absolute flex w-[86px] cursor-grab flex-col items-center gap-1.5 rounded-xl p-3 transition-colors hover:bg-foreground/10 active:cursor-grabbing"
                 style={{ left: layout.x, top: layout.y }}
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/60 shadow-lg shadow-black/25">
@@ -373,8 +381,8 @@ const UbuntuDesktop = ({ onOpenApp, showGuide, onDismissGuide, isCompact, appLab
           {!isCompact && <div className="guide-tooltip guide-tooltip-right absolute right-[128px] top-[132px] z-20 max-w-xs rounded-2xl border border-white/10 bg-slate-950/72 p-4 text-sm text-white/75 shadow-xl backdrop-blur-xl"><p className="font-display font-semibold text-white">{copy.desktopIcons}</p><p className="mt-1">{copy.desktopIconsText}</p></div>}
           {!isCompact && <div className="guide-tooltip absolute bottom-[118px] left-1/2 z-20 max-w-xs -translate-x-1/2 rounded-2xl border border-white/10 bg-slate-950/72 p-4 text-sm text-white/75 shadow-xl backdrop-blur-xl"><p className="font-display font-semibold text-white">{copy.dock}</p><p className="mt-1">{copy.dockText}</p></div>}
 
-          <div className={`absolute z-20 w-full ${isCompact ? "max-w-[calc(100%-2rem)]" : "max-w-md"} rounded-[28px] border border-white/10 bg-slate-950/78 p-6 shadow-2xl backdrop-blur-2xl`} style={{ left: guidePosition.x, top: guidePosition.y }}>
-            <div className="mb-3 flex cursor-grab items-start justify-between gap-4 rounded-2xl border border-white/8 bg-white/5 px-3 py-3 active:cursor-grabbing" onMouseDown={handleGuideMouseDown}>
+          <div className={`absolute z-40 w-full ${isCompact ? "max-w-[calc(100%-2rem)]" : "max-w-md"} rounded-[28px] border border-white/10 bg-slate-950/78 p-6 shadow-2xl backdrop-blur-2xl`} style={{ left: guidePosition.x, top: guidePosition.y }}>
+            <div className="mb-3 flex cursor-grab touch-none items-start justify-between gap-4 rounded-2xl border border-white/8 bg-white/5 px-3 py-3 active:cursor-grabbing" onPointerDown={handleGuideMouseDown}>
               <div>
                 <p className="text-[11px] uppercase tracking-[0.28em] text-orange-200/75">{copy.welcomeGuide}</p>
                 <h2 className="mt-2 text-2xl font-display font-bold text-white">{copy.welcomeTitle}</h2>

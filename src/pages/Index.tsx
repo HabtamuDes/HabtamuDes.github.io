@@ -55,7 +55,7 @@ const defaultWindows: Record<AppId, Omit<WindowState, "isOpen" | "isMinimized" |
   projects: { id: "projects", isMaximized: false, position: { x: 160, y: 50 }, size: { w: 750, h: 520 } },
   contact: { id: "contact", isMaximized: false, position: { x: 250, y: 90 }, size: { w: 600, h: 460 } },
   terminal: { id: "terminal", isMaximized: false, position: { x: 180, y: 70 }, size: { w: 700, h: 440 } },
-  notes: { id: "notes", isMaximized: false, position: { x: 220, y: 90 }, size: { w: 560, h: 480 } },
+  notes: { id: "notes", isMaximized: false, position: { x: 540, y: 120 }, size: { w: 460, h: 440 } },
   snake: { id: "snake", isMaximized: false, position: { x: 280, y: 100 }, size: { w: 520, h: 540 } },
   tictactoe: { id: "tictactoe", isMaximized: false, position: { x: 320, y: 120 }, size: { w: 460, h: 460 } },
   vscode: { id: "vscode", isMaximized: false, position: { x: 140, y: 40 }, size: { w: 840, h: 560 } },
@@ -331,9 +331,9 @@ const Index = () => {
     projects: () => <ProjectsWindow language={language} />,
     contact: () => <ContactWindow language={language} />,
     terminal: () => <TerminalWindow language={language} />,
-    notes: NotesWindow,
-    snake: SnakeWindow,
-    tictactoe: TicTacToeWindow,
+    notes: () => <NotesWindow language={language} />,
+    snake: () => <SnakeWindow language={language} />,
+    tictactoe: () => <TicTacToeWindow language={language} />,
     vscode: () => <DevToolsWindow tool="vscode" />,
     pgadmin: () => <DevToolsWindow tool="pgadmin" />,
     sqlserver: () => <DevToolsWindow tool="sqlserver" />,
@@ -355,6 +355,7 @@ const Index = () => {
         onResetWorkspace={resetWorkspace}
         onShowGuide={() => setShowGuide(true)}
         onOpenLauncher={() => setIsLauncherOpen(true)}
+        isCompact={isCompact}
         language={language}
         languageOptions={languageOptions}
         onLanguageChange={setLanguage}

@@ -45,13 +45,13 @@ const CommandPalette = ({ isOpen, items, onClose, onOpenApp, onShowGuide, copy }
   if (!isOpen) return null;
 
   return (
-    <div className="absolute inset-0 z-[150] flex items-start justify-center bg-slate-950/48 px-4 pt-20 backdrop-blur-sm">
+    <div className="absolute inset-0 z-[150] flex items-start justify-center bg-slate-950/48 px-3 pt-14 backdrop-blur-sm sm:px-4 sm:pt-20">
       <div
         data-testid="command-palette"
-        className="w-full max-w-2xl overflow-hidden rounded-[28px] border border-white/10 bg-slate-950/90 shadow-2xl backdrop-blur-2xl"
+        className="w-full max-w-2xl overflow-hidden rounded-[24px] border border-white/10 bg-slate-950/90 shadow-2xl backdrop-blur-2xl sm:rounded-[28px]"
       >
-        <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5">
+        <div className="flex items-center gap-3 border-b border-white/10 px-4 py-4 sm:px-5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/5 sm:h-10 sm:w-10">
             <Search className="h-5 w-5 text-white/70" />
           </div>
           <div className="flex-1">
@@ -73,7 +73,7 @@ const CommandPalette = ({ isOpen, items, onClose, onOpenApp, onShowGuide, copy }
           </button>
         </div>
 
-        <div className="grid gap-5 px-5 py-4 lg:grid-cols-[1fr_220px]">
+        <div className="grid gap-4 px-4 py-4 sm:px-5 sm:gap-5 lg:grid-cols-[1fr_220px]">
           <div className="space-y-2">
             {filteredItems.slice(0, 8).map((item) => (
               <button

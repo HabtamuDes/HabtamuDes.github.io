@@ -56,8 +56,8 @@ const experience: ExperienceItem[] = [
 const ExperienceWindow = ({ language }: { language: Language }) => {
   const copy = translations[language].experience;
   return (
-    <div className="space-y-5 animate-fade-in">
-      <div className="flex items-start justify-between gap-4">
+    <div className="space-y-4 md:space-y-5 animate-fade-in">
+      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:gap-4">
         <div>
           <h2 className="text-lg font-display font-bold">{copy.title}</h2>
           <p className="text-sm text-muted-foreground">
@@ -86,7 +86,7 @@ const ExperienceWindow = ({ language }: { language: Language }) => {
 
       <div className="space-y-4">
         {experience.map((item) => (
-          <div key={`${item.company}-${item.role}`} className="rounded-2xl border border-border bg-secondary/35 p-5">
+          <div key={`${item.company}-${item.role}`} className="rounded-2xl border border-border bg-secondary/35 p-4 md:p-5">
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div className="flex items-start gap-3">
                 <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${item.tone}`}>
